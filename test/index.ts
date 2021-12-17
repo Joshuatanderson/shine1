@@ -1,6 +1,7 @@
 import hre from "hardhat"
 import assert from "assert"
 import { ContractFactory } from "@ethersproject/contracts";
+import ethers from "ethers"
 
 let Shine: ContractFactory;
 let ShineV2: ContractFactory;
@@ -42,7 +43,7 @@ describe("the upgrade process works correctly", () => {
     const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
     // act
     const shine2 = await hre.upgrades.upgradeProxy(shine, ShineV2);
-    // assert
+    assert
     // upgrades via proxy to shineV2
     assert(await shine2.version() === "v1.0.0");
   });
