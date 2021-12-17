@@ -1,10 +1,11 @@
-import hre from "hardhat"
+import hre, {ethers} from "hardhat"
+import {expect} from "chai";
 import assert from "assert"
 import { ContractFactory } from "@ethersproject/contracts";
-import ethers from "ethers"
 
 let Shine: ContractFactory;
 let ShineV2: ContractFactory;
+
 before ("get factories", async function () {
   Shine = await hre.ethers.getContractFactory("Shine");
   ShineV2 = await hre.ethers.getContractFactory("ShineV2");
@@ -31,10 +32,12 @@ describe("deployment", () => {
     assert(await shine.totalSupply() / 10 ** 18  === 10000000000)
   });
 
-  // it("The owner has a balance equal to the total supply", async function(){
-  //   const shine = await hre.upgrades.deployProxy(this.Shine, {kind: 'uups'})
-  //   assert(await shine.totalSupply() === shine)
-  // })
+  it("The owner has a balance equal to the total supply", async function(){
+    const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
+    const [owner] = await hre.ethers.getSigners();
+
+    expect(await shine.balanceOf(owner.address)).to.equal(await shine.totalSupply());
+  })
 })
 
 describe("the upgrade process works correctly", () => {
