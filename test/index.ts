@@ -1,7 +1,8 @@
 import hre, {ethers} from "hardhat"
 import {expect} from "chai";
 import assert from "assert"
-import { ContractFactory } from "@ethersproject/contracts";
+import { ContractFactory, Contract } from "@ethersproject/contracts";
+import { ERC20Upgradeable } from "../typechain";
 
 let Shine: ContractFactory;
 let ShineV2: ContractFactory;
@@ -13,27 +14,26 @@ before ("get factories", async function () {
 
 describe("deployment", () => {
   // arrange
+  let shine: Contract;
+  beforeEach(async function(){
+    shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
+  })
   // act
 
   it("Is named Shine", async function(){
-    const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
     assert(await shine.name() === "Shine");
   })
   it("Has the symbol 'SHINE'", async function() {
-    const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
     assert(await shine.symbol() === "SHINE");
   })
   it("Has a decimal count of 18", async function(){
-    const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
     assert(await shine.decimals() === 18)
   })
   it("Has a total supply of ten billion", async function(){
-    const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
     assert(await shine.totalSupply() / 10 ** 18  === 10000000000)
   });
 
   it("The owner has a balance equal to the total supply", async function(){
-    const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
     const [owner] = await hre.ethers.getSigners();
 
     expect(await shine.balanceOf(owner.address)).to.equal(await shine.totalSupply());
