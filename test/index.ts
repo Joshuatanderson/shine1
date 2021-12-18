@@ -12,7 +12,7 @@ before ("get factories", async function () {
   ShineV2 = await hre.ethers.getContractFactory("ShineV2");
 })
 
-describe("deployment", () => {
+describe("state at deployment", () => {
   // arrange
   let shine: Contract;
   beforeEach(async function(){
