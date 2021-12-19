@@ -2,12 +2,13 @@
 pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract Shine is Initializable, ERC20Upgradeable, UUPSUpgradeable, OwnableUpgradeable {
+contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, OwnableUpgradeable {
+
     function initialize() public initializer {
         __ERC20_init("Shine", "SHINE");
         __Ownable_init();
