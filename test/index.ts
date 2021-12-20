@@ -41,13 +41,13 @@ describe("state at deployment", () => {
 })
 
 describe("the upgrade process works correctly", () => {
-  it("has a version number of v1.0.0!", async function(){
+  it("has a version number of v1.0.1!", async function(){
     // arrange
     const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
     // act
     const shine2 = await hre.upgrades.upgradeProxy(shine, ShineV2);
     assert
     // upgrades via proxy to shineV2
-    assert(await shine2.version() === "v1.0.0");
+    assert(await shine2.version() === "v1.0.1");
   });
 })

@@ -3,39 +3,39 @@
   "proxies": [
     {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0xbad7756516774cd717b58ae258098bbd13a77833b6cf76d36e7cd0da3325b79e",
+      "txHash": "0xf83ca1657125a70433220c23a550891c1f0bb4bf6b38f78a55c97e0ddc21a8d2",
       "kind": "uups"
     },
     {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x224fb81a1aff2849346d46512e162548e28a965d918129f31764e93c0c6d4202",
+      "txHash": "0x0124949b3ad8ae9f1d2119e856307b1900385cbc1c41e214fe523da90ced7a9f",
       "kind": "uups"
     },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0xa18253a904b1dc8dfbbf01de3d407834a0844b0b326c1fafe467a3e4ef26a7af",
+      "txHash": "0xa137626b67bace74814138f8d61e3d44b9ad66e2ff7d145019d58ab2fe40f5c6",
       "kind": "uups"
     },
     {
       "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-      "txHash": "0x51cb1af08a63cc1b8c5925a0d1bb730dd44306e280634f8fb0834aaefa80d21f",
+      "txHash": "0x72a82c47dfa2511052e298087ded20a3dadfabdf61f7537031573a058ef97c33",
       "kind": "uups"
     },
     {
       "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0xcc41e8a284a9623c26768e62de224473dfc82aaffd4988953bbaac5045effc91",
+      "txHash": "0xb594be6c2c29729eb6788b42eddc12d6e1d4b5459713eb86107a52a026e15822",
       "kind": "uups"
     },
     {
       "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-      "txHash": "0x3a3a2c09e77cd52a289ab281fb67f774c4e721740fa74fe316de43101e2c6128",
+      "txHash": "0xeb68ca2200f967912f60f08f4e0ca99c67907c80e2b3792d98fd2ff76e332a27",
       "kind": "uups"
     }
   ],
   "impls": {
-    "a5bc3cc4bf7e68367b81ca92bd9cac30c8a82ef11dcda6385abe66ec292fd521": {
+    "8da8f87571a4c9e26bcd9c8107f93ff3b21dd35d7e70fc6388fa8dfdad9914d2": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0x6f17ed9f7de77c8e1f54e7b12a46d73dcc71de8901d080a61e7aa311394214e9",
+      "txHash": "0x8b3b285d0a00b9632737188a2fa892eb11b343dbef2c71c8b953d59d606437bd",
       "layout": {
         "storage": [
           {
@@ -133,29 +133,125 @@
             "label": "__gap",
             "type": "t_array(t_uint256)49_storage",
             "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:82"
+          },
+          {
+            "contract": "Shine",
+            "label": "CHARITYWALLET",
+            "type": "t_address",
+            "src": "contracts/Shine.sol:16"
+          },
+          {
+            "contract": "Shine",
+            "label": "MARKETINGWALLET",
+            "type": "t_address",
+            "src": "contracts/Shine.sol:17"
+          },
+          {
+            "contract": "Shine",
+            "label": "TEAMWALLET",
+            "type": "t_address",
+            "src": "contracts/Shine.sol:18"
+          },
+          {
+            "contract": "Shine",
+            "label": "CHARITY_TAX_PERCENTAGE",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:20"
+          },
+          {
+            "contract": "Shine",
+            "label": "MARKETING_TAX_PERCENTAGE",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:21"
+          },
+          {
+            "contract": "Shine",
+            "label": "TEAM_TAX_PERCENTAGE",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:22"
+          },
+          {
+            "contract": "Shine",
+            "label": "_rOwned",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts/Shine.sol:24"
+          },
+          {
+            "contract": "Shine",
+            "label": "_tOwned",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts/Shine.sol:25"
+          },
+          {
+            "contract": "Shine",
+            "label": "_allowances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "contracts/Shine.sol:26"
+          },
+          {
+            "contract": "Shine",
+            "label": "_isExcluded",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "contracts/Shine.sol:28"
+          },
+          {
+            "contract": "Shine",
+            "label": "_excluded",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "contracts/Shine.sol:29"
+          },
+          {
+            "contract": "Shine",
+            "label": "MAX",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:31"
+          },
+          {
+            "contract": "Shine",
+            "label": "_tTotal",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:32"
+          },
+          {
+            "contract": "Shine",
+            "label": "_rTotal",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:33"
+          },
+          {
+            "contract": "Shine",
+            "label": "_tFeeTotal",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:34"
           }
         ],
         "types": {
           "t_address": {
             "label": "address"
           },
-          "t_array(t_uint256)49_storage": {
-            "label": "uint256[49]"
-          },
           "t_uint256": {
             "label": "uint256"
-          },
-          "t_array(t_uint256)50_storage": {
-            "label": "uint256[50]"
-          },
-          "t_bool": {
-            "label": "bool"
           },
           "t_mapping(t_address,t_uint256)": {
             "label": "mapping(address => uint256)"
           },
           "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
             "label": "mapping(address => mapping(address => uint256))"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
           },
           "t_string_storage": {
             "label": "string"
@@ -166,9 +262,9 @@
         }
       }
     },
-    "16768a1a7dc9accd7e3d402c64e1f96cbd895d28d32d266dd0433f8504eebed1": {
+    "d0505b142e03b8f2637e72dfc20d3ec9b7990c334ffdcd6172e45c3c4c507e86": {
       "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-      "txHash": "0xd610f81ce934cdc76c490f2a9353c6e67f1e029cea4fbb81d54a1664c5173a3c",
+      "txHash": "0x3a566c78007472a9792c1ec80432c77e635b0fa7034c455e1837a4b99e13588e",
       "layout": {
         "storage": [
           {
@@ -266,29 +362,125 @@
             "label": "__gap",
             "type": "t_array(t_uint256)49_storage",
             "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:82"
+          },
+          {
+            "contract": "Shine",
+            "label": "CHARITYWALLET",
+            "type": "t_address",
+            "src": "contracts/Shine.sol:16"
+          },
+          {
+            "contract": "Shine",
+            "label": "MARKETINGWALLET",
+            "type": "t_address",
+            "src": "contracts/Shine.sol:17"
+          },
+          {
+            "contract": "Shine",
+            "label": "TEAMWALLET",
+            "type": "t_address",
+            "src": "contracts/Shine.sol:18"
+          },
+          {
+            "contract": "Shine",
+            "label": "CHARITY_TAX_PERCENTAGE",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:20"
+          },
+          {
+            "contract": "Shine",
+            "label": "MARKETING_TAX_PERCENTAGE",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:21"
+          },
+          {
+            "contract": "Shine",
+            "label": "TEAM_TAX_PERCENTAGE",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:22"
+          },
+          {
+            "contract": "Shine",
+            "label": "_rOwned",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts/Shine.sol:24"
+          },
+          {
+            "contract": "Shine",
+            "label": "_tOwned",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts/Shine.sol:25"
+          },
+          {
+            "contract": "Shine",
+            "label": "_allowances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "contracts/Shine.sol:26"
+          },
+          {
+            "contract": "Shine",
+            "label": "_isExcluded",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "contracts/Shine.sol:28"
+          },
+          {
+            "contract": "Shine",
+            "label": "_excluded",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "contracts/Shine.sol:29"
+          },
+          {
+            "contract": "Shine",
+            "label": "MAX",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:31"
+          },
+          {
+            "contract": "Shine",
+            "label": "_tTotal",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:32"
+          },
+          {
+            "contract": "Shine",
+            "label": "_rTotal",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:33"
+          },
+          {
+            "contract": "Shine",
+            "label": "_tFeeTotal",
+            "type": "t_uint256",
+            "src": "contracts/Shine.sol:34"
           }
         ],
         "types": {
           "t_address": {
             "label": "address"
           },
-          "t_array(t_uint256)49_storage": {
-            "label": "uint256[49]"
-          },
           "t_uint256": {
             "label": "uint256"
-          },
-          "t_array(t_uint256)50_storage": {
-            "label": "uint256[50]"
-          },
-          "t_bool": {
-            "label": "bool"
           },
           "t_mapping(t_address,t_uint256)": {
             "label": "mapping(address => uint256)"
           },
           "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
             "label": "mapping(address => mapping(address => uint256))"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
           },
           "t_string_storage": {
             "label": "string"
