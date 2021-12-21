@@ -53,8 +53,8 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
     }
 
     /******************
-    * DO NOT REMOVE
-    * REMOVING THIS WILL PERMANENTLY BREAK UPGRADEABILITY
+    * DO NOT REMOVE _authorizeUpgrade
+    * REMOVING THIS FUNCTION WILL PERMANENTLY BREAK UPGRADEABILITY
     *****************/ 
 
     function _authorizeUpgrade(address newImplementation) internal
