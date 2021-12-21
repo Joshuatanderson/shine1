@@ -2,7 +2,6 @@ import hre, {ethers} from "hardhat"
 import {expect} from "chai";
 import assert from "assert"
 import { ContractFactory, Contract } from "@ethersproject/contracts";
-import { ERC20Upgradeable } from "../typechain";
 
 let Shine: ContractFactory;
 let ShineV2: ContractFactory;
@@ -46,8 +45,27 @@ describe("the upgrade process works correctly", () => {
     const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
     // act
     const shine2 = await hre.upgrades.upgradeProxy(shine, ShineV2);
-    assert
     // upgrades via proxy to shineV2
     assert(await shine2.version() === "v1.0.1");
   });
+})
+
+describe("An airdrop", () => {
+  let shine: Contract;
+  beforeEach(async function(){
+    shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
+  })
+  it("airdrops to multiple wallets successfully", async function(){
+    const [owner, address1, address2] = await hre.ethers.getSigners();
+
+    const decimals = ethers.BigNumber.from("10").pow(18);
+    const airdropAmount = hre.ethers.BigNumber.from(10000000).mul(decimals);
+    const airdropAddresses = [address1.address, address2.address]
+
+
+    await shine.airdrop(airdropAddresses, airdropAmount);
+
+    expect(await shine.balanceOf(address1.address)).to.equal(airdropAmount);
+    expect(await shine.balanceOf(address2.address)).to.equal(airdropAmount);
+  })
 })

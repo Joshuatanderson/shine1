@@ -3,39 +3,44 @@
   "proxies": [
     {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0xf83ca1657125a70433220c23a550891c1f0bb4bf6b38f78a55c97e0ddc21a8d2",
+      "txHash": "0x52beaf0a6db72d4269d927863a7ad275e6318dfc57e54ec9f8dcba396199aecd",
       "kind": "uups"
     },
     {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x0124949b3ad8ae9f1d2119e856307b1900385cbc1c41e214fe523da90ced7a9f",
+      "txHash": "0x2befbf33f02cd41727f345d9a78e80a3f2d4add5d540060ca2064cfb3c8a5548",
       "kind": "uups"
     },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0xa137626b67bace74814138f8d61e3d44b9ad66e2ff7d145019d58ab2fe40f5c6",
+      "txHash": "0x4692ecb964777535809b95902376a5c883c34165ad5664033eaa9678916cc906",
       "kind": "uups"
     },
     {
       "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-      "txHash": "0x72a82c47dfa2511052e298087ded20a3dadfabdf61f7537031573a058ef97c33",
+      "txHash": "0x2a71154e9f21cc41e02146852e6112bc8ab28bae94cb030af7cb36aa06f61012",
       "kind": "uups"
     },
     {
       "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0xb594be6c2c29729eb6788b42eddc12d6e1d4b5459713eb86107a52a026e15822",
+      "txHash": "0x524026897a026b1e986385966f24cf601a8ea5015bcd94df3189177454b75735",
       "kind": "uups"
     },
     {
       "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-      "txHash": "0xeb68ca2200f967912f60f08f4e0ca99c67907c80e2b3792d98fd2ff76e332a27",
+      "txHash": "0x47f3c5e2810331b319ea69a02b5c1adbeae9a5031c291336630b965a54d83dcb",
+      "kind": "uups"
+    },
+    {
+      "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      "txHash": "0xef4ac2418d8a8381567d30a7b3bbd2eb90873260846219aaa7115147af156e03",
       "kind": "uups"
     }
   ],
   "impls": {
-    "8da8f87571a4c9e26bcd9c8107f93ff3b21dd35d7e70fc6388fa8dfdad9914d2": {
+    "2d9da017df29d7572248f4b50b0171534ce7a240d6ab3420fa8586cb0bbc08be": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0x8647fc7f7b1b8df2b1f44e5189fe6de45d06f068d8f34bd5a53b2a6381163328",
+      "txHash": "0x5df3fb47fd41a0bdc39f5d79e115015e77cb92dcd29393fadc560800788d59b7",
       "layout": {
         "storage": [
           {
@@ -223,6 +228,18 @@
             "label": "_tFeeTotal",
             "type": "t_uint256",
             "src": "contracts/Shine.sol:34"
+          },
+          {
+            "contract": "Shine",
+            "label": "airdropWinners",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "contracts/Shine.sol:36"
+          },
+          {
+            "contract": "Shine",
+            "label": "_isFeeExempted",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "contracts/Shine.sol:37"
           }
         ],
         "types": {
@@ -262,9 +279,9 @@
         }
       }
     },
-    "d0505b142e03b8f2637e72dfc20d3ec9b7990c334ffdcd6172e45c3c4c507e86": {
+    "e2668c8a79f4d129d5d5e992616f34d67f004578ce82c139860f4e1f07618bf3": {
       "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-      "txHash": "0x9eb6e9bc1facbe971b0346fb1229b0aeeb9eeaa3f0349358ad5482e6e0fe11f3",
+      "txHash": "0xc5cb6e5ead52e61df5a14594514627918bfd8178ef8caa9d0f7a7e3c690efd7e",
       "layout": {
         "storage": [
           {
@@ -452,6 +469,18 @@
             "label": "_tFeeTotal",
             "type": "t_uint256",
             "src": "contracts/Shine.sol:34"
+          },
+          {
+            "contract": "Shine",
+            "label": "airdropWinners",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "contracts/Shine.sol:36"
+          },
+          {
+            "contract": "Shine",
+            "label": "_isFeeExempted",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "contracts/Shine.sol:37"
           }
         ],
         "types": {

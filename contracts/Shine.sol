@@ -32,6 +32,10 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
     uint256 private _tTotal;
     uint256 private _rTotal;
     uint256 private _tFeeTotal;
+
+    address[] public airdropWinners;
+    mapping (address => bool) private _isFeeExempted;
+
     
     function initialize() public initializer {
         __ERC20_init("Shine", "SHINE");
@@ -50,6 +54,9 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _rTotal = (MAX - (MAX % _tTotal));  // this is basically an arbitrary, magic value
         _rOwned[msg.sender] = _rTotal;
         _tOwned[msg.sender] = _tTotal;
+
+        // Init privileges
+        _exemptAddress(msg.sender);
     }
 
     /******************
@@ -132,6 +139,10 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         require(rAmount <= _rTotal, "Amount must be less than total reflections");
         uint256 currentRate =  _getRate();
         return rAmount.div(currentRate);
+    }
+
+    function _exemptAddress(address account) public onlyOwner () {
+        _isFeeExempted[account] = true;
     }
 
     function excludeAccount(address account) external onlyOwner() {
@@ -217,6 +228,16 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         emit Transfer(sender, recipient, tTransferAmount);
     }
 
+    function _transferFeeFree(address sender, address recipient, uint256 tAmount) private {
+        require(_isFeeExempted[sender], "Sender is not fee exempt");
+
+        (uint256 rAmount, uint256 rTransferAmount,, uint256 tTransferAmount,) = _getValues(tAmount);
+        _tOwned[sender] = _tOwned[sender].sub(tAmount);
+        _rOwned[sender] = _rOwned[sender].sub(rAmount);
+        _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);        
+    }
+
     function _reflectFee(uint256 rFee, uint256 tFee) private {
         _rTotal = _rTotal.sub(rFee);
         _tFeeTotal = _tFeeTotal.add(tFee);
@@ -229,7 +250,11 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         return (rAmount, rTransferAmount, rFee, tTransferAmount, tFee);
     }
 
-    function _getTValues(uint256 tAmount) private pure returns (uint256, uint256) {
+    function _getTValues(uint256 tAmount) private view returns (uint256, uint256) {
+        if(_isFeeExempted[msg.sender]){
+            return (tAmount, 0);
+        }
+        // TODO: adjust me to fit Shine reqs
         uint256 tFee = tAmount.div(100);
         uint256 tTransferAmount = tAmount.sub(tFee);
         return (tTransferAmount, tFee);
@@ -257,6 +282,17 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         }
         if (rSupply < _rTotal.div(_tTotal)) return (_rTotal, _tTotal);
         return (rSupply, tSupply);
+    }
+
+    function airdrop(address[] memory users, uint256 amount)
+        external
+        onlyOwner
+    {
+        require(amount <= balanceOf(msg.sender), "insufficient funds");
+        airdropWinners = users;
+        for (uint256 i = 0; i < users.length; i++) {
+            _transferFeeFree(msg.sender, users[i], amount);
+        }
     }
 }
 
