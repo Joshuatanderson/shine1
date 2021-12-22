@@ -235,7 +235,8 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _tOwned[sender] = _tOwned[sender].sub(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);        
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);    
+        emit Transfer(sender, recipient, tTransferAmount);
     }
 
     function _reflectFee(uint256 rFee, uint256 tFee) private {
