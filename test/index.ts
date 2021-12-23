@@ -2,6 +2,7 @@ import hre, {ethers} from "hardhat"
 import {expect} from "chai";
 import assert from "assert"
 import { ContractFactory, Contract } from "@ethersproject/contracts";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 let Shine: ContractFactory;
 let ShineV2: ContractFactory;
@@ -14,7 +15,7 @@ before ("get factories", async function () {
 describe("state at deployment", () => {
   // arrange
   let shine: Contract;
-  beforeEach(async function(){
+  before(async function(){
     shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
   })
   // act
@@ -31,6 +32,18 @@ describe("state at deployment", () => {
   it("Has a total supply of ten billion", async function(){
     assert(await shine.totalSupply() / 10 ** 18  === 10000000000)
   });
+
+  describe("the fee structure", () => {
+    it("has a charity fee of 3", async function(){
+      expect(await shine.charityFee()).to.equal(3);
+    })
+    it("has a redistribution fee of 2", async function(){
+      expect(await shine.redistributionFee()).to.equal(2);
+    })
+    it("has a team fee of 2", async function(){
+      expect(await shine.teamFee()).to.equal(2);
+    })
+  })
 
   it("The owner has a balance equal to the total supply", async function(){
     const [owner] = await hre.ethers.getSigners();
@@ -52,7 +65,7 @@ describe("the upgrade process works correctly", () => {
 
 describe("An airdrop", () => {
   let shine: Contract;
-  beforeEach(async function(){
+  before(async function(){
     shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
   })
   it("airdrops to multiple wallets successfully", async function(){
@@ -68,4 +81,89 @@ describe("An airdrop", () => {
     expect(await shine.balanceOf(address1.address)).to.equal(airdropAmount);
     expect(await shine.balanceOf(address2.address)).to.equal(airdropAmount);
   })
+})
+
+describe("An instance with set wallets", () => {
+  let shine: Contract;
+
+  before(async function(){
+    shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
+  })
+
+  it("initializes wallets", async function(){
+    const [, charity, team] = await hre.ethers.getSigners();
+
+    it("sets up the charity wallet", async function(){
+      await shine.setCharityWallet(charity);
+      expect(await shine.charityWallet() === charity)
+    })
+
+    it("sets up the team wallet", async function(){
+      await shine.setTeamWallet(team);
+      expect(await shine.teamWallet() === team)
+    })
+  })
+})
+// 
+// test setting wallets
+// test exempt transaction
+// test non-exempt transaction
+
+describe("transfer behavior", async function(){
+  let shine: Contract;
+
+  beforeEach(async function(){
+    shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
+  })
+
+
+    it("does not tax a transfer from a fee-exempt wallet to a normal wallet",async function(){
+      const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+
+      await shine.transfer(thirdPartyRecipient.address, 10000000);
+      expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000)
+    })
+    it("does not tax a transfer from a fee-exempt wallet to a fee-exempt wallet",async function(){
+      const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+
+      await shine.transfer(charity.address, 10000000);
+      expect(await shine.balanceOf(charity.address)).to.equal(10000000)
+    })
+    describe("a transfer from a normal wallet to a normal wallet", async function(){
+
+      // it("the recipient has 97% of the transfer", async function(){
+      //   const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+      //   await shine.setCharityWallet(charity.address);
+      //   await shine.setTeamWallet(team.address);
+  
+      //   // TODO: make transfer come from correct address
+      //   await shine.transfer(thirdPartyRecipient.address, 10000000);
+
+      //   expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000 * .93)
+      // })
+      // it("the charity wallet has 3% of the transfer", async function() {
+      //   const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+      //   await shine.setCharityWallet(charity.address);
+      //   await shine.setTeamWallet(team.address);
+  
+      //   // TODO: make transfer come from correct address
+      //   await shine.transfer(thirdPartySender.address, 10000000);
+
+      //   expect(await shine.balanceOf(charity.address)).to.equal(10000000 * .03)
+      // })
+      // it("the team wallet has 2% of the transfer", async function() {
+      //   const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+      //   await shine.setCharityWallet(charity.address);
+      //   await shine.setTeamWallet(team.address);
+  
+      //   // TODO: make transfer come from correct address
+      //   await shine.transfer(thirdPartySender.address, 10000000);
+
+      //   expect(await shine.balanceOf(charity.address)).to.equal(10000000 * .02)
+      // })
+      it("the reflection pool increased in a manner consistent with receiving 2% of the transfer")
+    });
+  
+  // const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+
 })
