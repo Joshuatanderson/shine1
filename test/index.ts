@@ -117,6 +117,7 @@ describe("transfer behavior", async function(){
   })
 
 
+
     it("does not tax a transfer from a fee-exempt wallet to a normal wallet",async function(){
       const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
 
@@ -131,36 +132,48 @@ describe("transfer behavior", async function(){
     })
     describe("a transfer from a normal wallet to a normal wallet", async function(){
 
-      // it("the recipient has 97% of the transfer", async function(){
-      //   const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
-      //   await shine.setCharityWallet(charity.address);
-      //   await shine.setTeamWallet(team.address);
-  
-      //   // TODO: make transfer come from correct address
-      //   await shine.transfer(thirdPartyRecipient.address, 10000000);
+      it("Transfers 93% to the recipient", async function(){
+        const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        await shine.setCharityWallet(charity.address);
+        await shine.setTeamWallet(team.address);
 
-      //   expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000 * .93)
-      // })
-      // it("the charity wallet has 3% of the transfer", async function() {
-      //   const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
-      //   await shine.setCharityWallet(charity.address);
-      //   await shine.setTeamWallet(team.address);
-  
-      //   // TODO: make transfer come from correct address
-      //   await shine.transfer(thirdPartySender.address, 10000000);
+        await shine.transfer(thirdPartySender.address, 10000000);
 
-      //   expect(await shine.balanceOf(charity.address)).to.equal(10000000 * .03)
-      // })
-      // it("the team wallet has 2% of the transfer", async function() {
-      //   const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
-      //   await shine.setCharityWallet(charity.address);
-      //   await shine.setTeamWallet(team.address);
-  
-      //   // TODO: make transfer come from correct address
-      //   await shine.transfer(thirdPartySender.address, 10000000);
+        let thirdPartySignedShine = await shine.connect(thirdPartySender);
 
-      //   expect(await shine.balanceOf(charity.address)).to.equal(10000000 * .02)
-      // })
+        await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
+
+        // await thirdPartySender.sendTransaction({Recipient: shine.address})
+  
+        // TODO: make transfer come from correct address
+        expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000 * .93)
+      })
+      it("the charity wallet has 3% of the transfer", async function(){
+        const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        await shine.setCharityWallet(charity.address);
+        await shine.setTeamWallet(team.address);
+
+        await shine.transfer(thirdPartySender.address, 10000000);
+
+        let thirdPartySignedShine = await shine.connect(thirdPartySender);
+
+        await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
+
+        expect(await shine.balanceOf(charity.address)).to.equal(10000000 * .03)
+      })
+      it("the team wallet has 2% of the transfer", async function() {
+        const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        await shine.setCharityWallet(charity.address);
+        await shine.setTeamWallet(team.address);
+
+        await shine.transfer(thirdPartySender.address, 10000000);
+
+        let thirdPartySignedShine = await shine.connect(thirdPartySender);
+
+        await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
+        await shine.transfer(thirdPartySender.address, 10000000);
+        expect(await shine.balanceOf(team.address)).to.equal(10000000 * .02)
+      })
       it("the reflection pool increased in a manner consistent with receiving 2% of the transfer")
     });
   
