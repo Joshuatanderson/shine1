@@ -65,6 +65,7 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _setRate();
 
         // exclude owner and this contract from fee
+        excludeAccount(msg.sender);
         _isFeeExempted[msg.sender] = true;
         _isFeeExempted[address(this)] = true;
     }
@@ -164,7 +165,7 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _isFeeExempted[teamWallet] = true;
     } 
 
-    function excludeAccount(address account) external onlyOwner() {
+    function excludeAccount(address account) public onlyOwner() {
         require(!_isExcluded[account], "Account already excluded");
         if(_rOwned[account] > 0) {
             _tOwned[account] = tokenFromReflection(_rOwned[account]);

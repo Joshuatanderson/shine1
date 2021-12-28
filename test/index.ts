@@ -131,6 +131,7 @@ describe("transfer behavior", async function(){
       expect(await shine.balanceOf(charity.address)).to.equal(10000000)
     })
     describe("a transfer from a normal wallet to a normal wallet", async function(){
+      // TODO: refactor to a beforeEach?
 
       it("Transfers 93% to the recipient", async function(){
         const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
@@ -171,10 +172,8 @@ describe("transfer behavior", async function(){
         let thirdPartySignedShine = await shine.connect(thirdPartySender);
 
         await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
-        await shine.transfer(thirdPartySender.address, 10000000);
         expect(await shine.balanceOf(team.address)).to.equal(10000000 * .02)
       })
-      it("the reflection pool increased in a manner consistent with receiving 2% of the transfer")
     });
   
   // const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
