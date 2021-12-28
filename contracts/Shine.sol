@@ -15,15 +15,15 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
 
     // set privileged wallets
     address public charityWallet;
-    address public teamWallet;
+    address public marketingWallet;
 
     uint256 public charityFee;
     uint256 public redistributionFee;
-    uint256 public teamFee;
+    uint256 public marketingFee;
 
     uint256 private _previousCharityFee;
     uint256 private _previousRedistributionFee;
-    uint256 private _previousTeamFee;
+    uint256 private _previousMarketingFee;
 
     mapping (address => uint256) private _rOwned;
     mapping (address => uint256) private _tOwned;
@@ -50,11 +50,11 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
 
         charityFee = 3;
         redistributionFee = 2;
-        teamFee = 2;
+        marketingFee = 2;
 
         _previousCharityFee = 3;
         _previousRedistributionFee = 2;
-        _previousTeamFee = 2;
+        _previousMarketingFee = 2;
 
         // init reflection variables
         uint256 MAX = ~uint256(0); // maximum possible value of uint256 type
@@ -160,9 +160,9 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _isFeeExempted[charityWallet] = true;
     }
 
-    function setTeamWallet (address team) public onlyOwner () {
-        teamWallet = team;
-        _isFeeExempted[teamWallet] = true;
+    function setMarketingWallet (address marketing) public onlyOwner () {
+        marketingWallet = marketing;
+        _isFeeExempted[marketingWallet] = true;
     } 
 
     function excludeAccount(address account) public onlyOwner() {
@@ -235,66 +235,66 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
             return;
         }
         charityFee = 0;
-        teamFee = 0;
+        marketingFee = 0;
         redistributionFee = 0;
     }
 
     function _restoreAllFees() private {
         charityFee = _previousCharityFee;
-        teamFee = _previousTeamFee;
+        marketingFee = _previousMarketingFee;
         redistributionFee = _previousRedistributionFee;
     }
 
-    function _processFeeTransfers(uint256 tCharity, uint256 tTeam, uint256 rFee, uint256 tFee) private {
+    function _processFeeTransfers(uint256 tCharity, uint256 tMarketing, uint256 rFee, uint256 tFee) private {
         _takeFee(tCharity, charityWallet);     
-        _takeFee(tTeam, teamWallet);     
+        _takeFee(tMarketing, marketingWallet);     
         _reflectFee(rFee, tFee);
     }
 
     function _transferStandard(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tTeam) = _getValues(tAmount);
+        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
 
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);    
 
-        _processFeeTransfers(tCharity, tTeam, rFee, tFee);
+        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
         
         emit Transfer(sender, recipient, tTransferAmount);
     }
 
     function _transferToExcluded(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tTeam) = _getValues(tAmount);
+        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
 
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
         _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
 
-        _processFeeTransfers(tCharity, tTeam, rFee, tFee);
+        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
 
         emit Transfer(sender, recipient, tTransferAmount);
     }
 
     function _transferFromExcluded(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tTeam) = _getValues(tAmount);
+        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
 
         _tOwned[sender] = _tOwned[sender].sub(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
 
-       _processFeeTransfers(tCharity, tTeam, rFee, tFee);
+       _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
 
         emit Transfer(sender, recipient, tTransferAmount);
     }
 
     function _transferBothExcluded(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tTeam) = _getValues(tAmount);
+        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
 
         _tOwned[sender] = _tOwned[sender].sub(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
         _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
 
-        _processFeeTransfers(tCharity, tTeam, rFee, tFee);
+        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
 
         emit Transfer(sender, recipient, tTransferAmount);
     }
@@ -305,9 +305,9 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
     }
 
     function _getValues(uint256 tAmount) private view returns (uint256, uint256, uint256, uint256, uint256, uint256, uint256) {
-        (uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tTeam) = _getTValues(tAmount);
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee) = _getRValues(tAmount, tFee, tCharity, tTeam);
-        return (rAmount, rTransferAmount, rFee, tTransferAmount, tFee, tCharity, tTeam);
+        (uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getTValues(tAmount);
+        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee) = _getRValues(tAmount, tFee, tCharity, tMarketing);
+        return (rAmount, rTransferAmount, rFee, tTransferAmount, tFee, tCharity, tMarketing);
     }
 
     function _getTValues(uint256 tAmount) private view returns (uint256, uint256, uint256, uint256){
@@ -317,19 +317,19 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
 
         uint256 tFee = tAmount.mul(redistributionFee).div(100);
         uint256 tCharity = tAmount.mul(charityFee).div(100);
-        uint256 tTeam = tAmount.mul(teamFee).div(100);
+        uint256 tMarketing = tAmount.mul(marketingFee).div(100);
 
-        uint256 tTransferAmount = tAmount.sub(tFee).sub(tCharity).sub(tTeam);
-        return (tTransferAmount, tFee, tCharity, tTeam);
+        uint256 tTransferAmount = tAmount.sub(tFee).sub(tCharity).sub(tMarketing);
+        return (tTransferAmount, tFee, tCharity, tMarketing);
     }
 
-    function _getRValues(uint256 tAmount, uint256 tFee, uint256 tCharity, uint256 tTeam) private view returns (uint256, uint256, uint256) {
+    function _getRValues(uint256 tAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) private view returns (uint256, uint256, uint256) {
         uint256 rAmount = tAmount.mul(_currentRate);
         uint256 rFee = tFee.mul(_currentRate);
         uint256 rCharity = tCharity.mul(_currentRate);
-        uint256 rTeam = tTeam.mul(_currentRate);
+        uint256 rMarketing = tMarketing.mul(_currentRate);
 
-        uint256 rTransferAmount = rAmount.sub(rFee).sub(rCharity).sub(rTeam);
+        uint256 rTransferAmount = rAmount.sub(rFee).sub(rCharity).sub(rMarketing);
         return (rAmount, rTransferAmount, rFee);
     }
 

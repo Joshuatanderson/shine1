@@ -41,7 +41,7 @@ describe("state at deployment", () => {
       expect(await shine.redistributionFee()).to.equal(2);
     })
     it("has a team fee of 2", async function(){
-      expect(await shine.teamFee()).to.equal(2);
+      expect(await shine.marketingFee()).to.equal(2);
     })
   })
 
@@ -99,8 +99,8 @@ describe("An instance with set wallets", () => {
     })
 
     it("sets up the team wallet", async function(){
-      await shine.setTeamWallet(team);
-      expect(await shine.teamWallet() === team)
+      await shine.setMarketingWallet(team);
+      expect(await shine.marketingWallet() === team)
     })
   })
 })
@@ -136,7 +136,7 @@ describe("transfer behavior", async function(){
       it("Transfers 93% to the recipient", async function(){
         const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
         await shine.setCharityWallet(charity.address);
-        await shine.setTeamWallet(team.address);
+        await shine.setMarketingWallet(team.address);
 
         await shine.transfer(thirdPartySender.address, 10000000);
 
@@ -152,7 +152,7 @@ describe("transfer behavior", async function(){
       it("the charity wallet has 3% of the transfer", async function(){
         const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
         await shine.setCharityWallet(charity.address);
-        await shine.setTeamWallet(team.address);
+        await shine.setMarketingWallet(team.address);
 
         await shine.transfer(thirdPartySender.address, 10000000);
 
@@ -165,7 +165,7 @@ describe("transfer behavior", async function(){
       it("the team wallet has 2% of the transfer", async function() {
         const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
         await shine.setCharityWallet(charity.address);
-        await shine.setTeamWallet(team.address);
+        await shine.setMarketingWallet(team.address);
 
         await shine.transfer(thirdPartySender.address, 10000000);
 
