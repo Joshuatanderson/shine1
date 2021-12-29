@@ -38,54 +38,54 @@
     },
     {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0xdcc473ae9556c58771becf97b24ff5a0966b397c43ecc324c61fb329a96901ec",
+      "txHash": "0xe75b25fa366e00e27f45bf657d27f5e58d806b4bdb659c988745735be14f8c45",
       "kind": "uups"
     },
     {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x5d91f2bcbdb56ed4f2d0974052761367f1943d7e11659ddd227fce415140ef35",
+      "txHash": "0x80372b513d89616613aace3694a6fee1106f37038eff93b764c9c42c96da9ad7",
       "kind": "uups"
     },
     {
       "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0xd3429559a43179b1390ed348b530c88636d655ac93d8b27619910699d6e49ac4",
+      "txHash": "0xbf698bcf26a636417900252088535d3b8a3f8b716a2a26da28ad32a9247b3464",
       "kind": "uups"
     },
     {
       "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-      "txHash": "0xc2bc894557798f54c127dfb6b191c41444d48800c40b91ad8d53805ab2c2cac6",
+      "txHash": "0x935362acd491fcc173cd210d086e9551f0c71c9341afa4d681fac7fa3bc28a7b",
       "kind": "uups"
     },
     {
       "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
-      "txHash": "0xfc641893301a9ef32d1fb852788a40d2fb0aaf66d424c2be7d6504d0322ec525",
+      "txHash": "0x11a3e7da9105db09e3216b14e94bf2ae1312663865a541d9863520d20d6bc3b2",
       "kind": "uups"
     },
     {
       "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
-      "txHash": "0xade40969480ce68c1a7713ac922b2a5da604f54535c346736c6bd4beb85222fd",
+      "txHash": "0x724d4b8990700072042a9b2aa40781f664612bb59cfd05044bb73897d820c0aa",
       "kind": "uups"
     },
     {
       "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
-      "txHash": "0x745db73b648c96419f9ba46a15cd3751246dd6360e480fe3c9e2028ba3da058e",
+      "txHash": "0x1e437658eaa8a0af451fac8ec81dc74d4510c8e1591c34d83ea7473dde5478f8",
       "kind": "uups"
     },
     {
       "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
-      "txHash": "0x101a38d5078b3ddd2604379f70dca6cec6803590db769f08aebecbe5ccd9d82b",
+      "txHash": "0x2cb38fcda6056da881945520990fe0bc2c9b0333787f666d126b9737e0d8914d",
       "kind": "uups"
     },
     {
       "address": "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d",
-      "txHash": "0x63ce087da1fa7483fe660acfcc36b84bcf510eefda85a7a5152dd253f0a3971f",
+      "txHash": "0xaae824edef99b34b7ff12f2fdb20910ba36df49078925aec98bb1508905404d8",
       "kind": "uups"
     }
   ],
   "impls": {
-    "4396cc4a7bc0659d3d87b9dc0c29c651807097f31933cd122eb10950487addd6": {
+    "52e5dfad9fc0e8cf43035ddb37e8d7bf2aecdef2958e4f210e1503f5f7a85983": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0x8884173be7da6098c62e69ac64eebee260535418a72ec075b606f004939110a4",
+      "txHash": "0x19bb400da968ded224452ea4dc16a2237683b57da9e9a99c64d2fc78bbc86415",
       "layout": {
         "storage": [
           {
@@ -192,7 +192,7 @@
           },
           {
             "contract": "Shine",
-            "label": "teamWallet",
+            "label": "marketingWallet",
             "type": "t_address",
             "src": "contracts/Shine.sol:18"
           },
@@ -210,7 +210,7 @@
           },
           {
             "contract": "Shine",
-            "label": "teamFee",
+            "label": "marketingFee",
             "type": "t_uint256",
             "src": "contracts/Shine.sol:22"
           },
@@ -228,7 +228,7 @@
           },
           {
             "contract": "Shine",
-            "label": "_previousTeamFee",
+            "label": "_previousMarketingFee",
             "type": "t_uint256",
             "src": "contracts/Shine.sol:26"
           },
@@ -330,9 +330,9 @@
         }
       }
     },
-    "01a183a46282cc0b4db019790fb26cadfd9bab427eca0603aaeee407ac7f41dd": {
+    "42bd8f2931630fd1d8a32832801119e95911e55edb7d262e5b19211d9fe998c4": {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0xb834ec9176cc2ff4edbd068ee8e7b90f06278ba086492e7590ef5d0896b9cd70",
+      "txHash": "0x740ebb746fb7b4a2cdc82dd840eb5684fa5cd8c9976e525116ba3c59fe82b876",
       "layout": {
         "storage": [
           {
@@ -439,7 +439,7 @@
           },
           {
             "contract": "Shine",
-            "label": "teamWallet",
+            "label": "marketingWallet",
             "type": "t_address",
             "src": "contracts/Shine.sol:18"
           },
@@ -457,7 +457,7 @@
           },
           {
             "contract": "Shine",
-            "label": "teamFee",
+            "label": "marketingFee",
             "type": "t_uint256",
             "src": "contracts/Shine.sol:22"
           },
@@ -475,7 +475,7 @@
           },
           {
             "contract": "Shine",
-            "label": "_previousTeamFee",
+            "label": "_previousMarketingFee",
             "type": "t_uint256",
             "src": "contracts/Shine.sol:26"
           },
