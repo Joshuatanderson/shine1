@@ -175,6 +175,20 @@ describe("transfer behavior", async function(){
         expect(await shine.balanceOf(team.address)).to.equal(10000000 * .02)
       })
     });
+
+  describe("the contract when paused", () => {
+    let shine: Contract;
+
+    beforeEach(async function(){
+      shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
+    });
+
+    it("The pause event emits when pause() is called by the owner", async function(){
+      const [owner] = await hre.ethers.getSigners();
+
+      expect(await shine.pause()).to.emit(shine, "Paused")
+    })
+  })
   
   // const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
 

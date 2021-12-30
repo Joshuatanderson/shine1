@@ -1,16 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 
-contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, OwnableUpgradeable {
-    using AddressUpgradeable for address;
+contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
     using SafeMathUpgradeable for uint256;
 
     // set privileged wallets
@@ -43,8 +40,9 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
 
     function initialize() public initializer {
         __ERC20_init("Shine", "SHINE");
-        __Ownable_init();
         __Pausable_init();
+        __Ownable_init();
+        __UUPSUpgradeable_init();
 
         _mint(msg.sender, 10000000000 * 10 ** decimals());
 
@@ -79,6 +77,23 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         override
         onlyOwner {}
 
+    // function pause() public onlyOwner {
+    //     _pause();
+    // }
+
+    // function unpause() public onlyOwner {
+    //     _unpause();
+    // }
+
+    // function _beforeTokenTransfer(address from, address to, uint256 amount)
+    //     internal
+    //     whenNotPaused
+    //     override
+    // {
+    //     super._beforeTokenTransfer(from, to, amount);
+    // }
+
+
     function totalSupply() public view override returns (uint256) {
         return _tTotal;
     }
@@ -104,7 +119,7 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
 
     function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
         _transfer(sender, recipient, amount);
-        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "ERC20: transfer amount exceeds allowance"));
+        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "Transfer amount exceeds allowance"));
         return true;
     }
 
@@ -114,7 +129,7 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
     }
 
     function decreaseAllowance(address spender, uint256 subtractedValue) public virtual override returns (bool) {
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "ERC20: decreased allowance below zero"));
+        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "Decreased allowance below zero"));
         return true;
     }
 
@@ -122,13 +137,9 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         return _isExcluded[account];
     }
 
-    function totalFees() public view returns (uint256) {
-        return _tFeeTotal;
-    }
-
     function reflect(uint256 tAmount) public {
         address sender = _msgSender();
-        require(!_isExcluded[sender], "Excluded addresses cannot call this function");
+        require(!_isExcluded[sender], "Excluded addresses cannot call");
         (uint256 rAmount,,,,,,) = _getValues(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _rTotal = _rTotal.sub(rAmount);
@@ -147,7 +158,7 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
     }
 
     function tokenFromReflection(uint256 rAmount) public view returns(uint256) {
-        require(rAmount <= _rTotal, "Amount must be less than total reflections");
+        require(rAmount <= _rTotal, "Must be less than reflections");
         return rAmount.div(_currentRate);
     }
 
@@ -174,7 +185,6 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _excluded.push(account);
     }
 
-    // TODO: this is awful.  Should probably be optimized to mapping.
     function includeAccount(address account) external onlyOwner() {
         require(_isExcluded[account], "Account already excluded");
         for (uint256 i = 0; i < _excluded.length; i++) {
@@ -189,21 +199,25 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
     }
 
     function _approve(address owner, address spender, uint256 amount) internal override {
-        require(owner != address(0), "approve from the zero address");
-        require(spender != address(0), "approve to the zero address");
+        require(owner != address(0), "approve from zero address");
+        require(spender != address(0), "approve to zero address");
 
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
     }
 
     function _transfer(address sender, address recipient, uint256 amount) internal override{
-        require(sender != address(0), "transfer from the zero address");
-        require(recipient != address(0), "transfer to the zero address");
+        require(sender != address(0), "transfer from zero address");
+        require(recipient != address(0), "transfer to zero address");
         require(amount > 0, "Transfer amount not > zero");
 
         if(_isFeeExempted[sender] || _isFeeExempted[sender]){
             _removeAllFees();
         }
+
+        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(amount);
+
+        // responsibility for getting values will be moved to _transfer.
 
         if (_isExcluded[sender] && !_isExcluded[recipient]) {
             _transferFromExcluded(sender, recipient, amount);
@@ -216,6 +230,8 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         } else {
             _transferStandard(sender, recipient, amount);
         }
+
+        emit Transfer(sender, recipient, tTransferAmount);
 
         if(_isFeeExempted[sender] || _isFeeExempted[sender]){
             _restoreAllFees();
@@ -230,7 +246,7 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _tOwned[recipient] = _tOwned[recipient].add(tFee);
     }
 
-    function _removeAllFees() private {
+    function _removeAllFees() internal {
         if(redistributionFee == 0 && charityFee == 0) {
             return;
         }
@@ -239,7 +255,7 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         redistributionFee = 0;
     }
 
-    function _restoreAllFees() private {
+    function _restoreAllFees() internal {
         charityFee = _previousCharityFee;
         marketingFee = _previousMarketingFee;
         redistributionFee = _previousRedistributionFee;
@@ -258,8 +274,6 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);    
 
         _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-        
-        emit Transfer(sender, recipient, tTransferAmount);
     }
 
     function _transferToExcluded(address sender, address recipient, uint256 tAmount) private {
@@ -270,8 +284,6 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
 
         _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-
-        emit Transfer(sender, recipient, tTransferAmount);
     }
 
     function _transferFromExcluded(address sender, address recipient, uint256 tAmount) private {
@@ -282,8 +294,6 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
 
        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-
-        emit Transfer(sender, recipient, tTransferAmount);
     }
 
     function _transferBothExcluded(address sender, address recipient, uint256 tAmount) private {
@@ -360,11 +370,5 @@ contract Shine is Initializable, ERC20PausableUpgradeable, UUPSUpgradeable, Owna
         for (uint256 i = 0; i < users.length; i++) {
             _transfer(msg.sender, users[i], amount);
         }
-    }
-}
-
-contract ShineV2 is Shine {
-    function version() pure public returns (string memory) {
-        return "v1.0.1";
     }
 }
