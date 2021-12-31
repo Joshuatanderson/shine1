@@ -27,65 +27,85 @@
       "kind": "uups"
     },
     {
-      "address": "0x4A679253410272dd5232B3Ff7cF5dbB88f295319",
-      "txHash": "0x4f18390649071b72960ba86cdd1c3a29e7e237e9e2df8397cb525ec0a31dd51c",
-      "kind": "uups"
-    },
-    {
-      "address": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f",
-      "txHash": "0xc5f5d437542723849fb8620a1f150a36a09f6c5327096f3f4263b0e7ea7494da",
-      "kind": "uups"
-    },
-    {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0xe75b25fa366e00e27f45bf657d27f5e58d806b4bdb659c988745735be14f8c45",
+      "txHash": "0xbb1eac0d873a91b54ef3797fb17c2e5943c0095cc30b28367d51a3e53793cbe9",
       "kind": "uups"
     },
     {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x80372b513d89616613aace3694a6fee1106f37038eff93b764c9c42c96da9ad7",
+      "txHash": "0x2466fe9a4d3367c72cff558cad40efbdd199006f199de644b43e073728ca80b1",
       "kind": "uups"
     },
     {
       "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0xbf698bcf26a636417900252088535d3b8a3f8b716a2a26da28ad32a9247b3464",
+      "txHash": "0xc69a85f489447f9cd66a3cc1c90ad94bcb47ed3a649f1e5e9fe1fc8325e295ff",
       "kind": "uups"
     },
     {
       "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-      "txHash": "0x935362acd491fcc173cd210d086e9551f0c71c9341afa4d681fac7fa3bc28a7b",
+      "txHash": "0x481f49eff980d291d0b814cc0c07455cd7d1d064a0b6b19eec61b04c1b771363",
       "kind": "uups"
     },
     {
       "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
-      "txHash": "0x11a3e7da9105db09e3216b14e94bf2ae1312663865a541d9863520d20d6bc3b2",
+      "txHash": "0x5950e21da3b49b93b88e57a698088077d3fe9a90af0e1c84429e3932eec0f527",
       "kind": "uups"
     },
     {
       "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
-      "txHash": "0x724d4b8990700072042a9b2aa40781f664612bb59cfd05044bb73897d820c0aa",
+      "txHash": "0xc2e23f6caa6530718b1975f0988fa4e7f918e2875cf112ff8ce8b99aa82ef51e",
       "kind": "uups"
     },
     {
       "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
-      "txHash": "0x1e437658eaa8a0af451fac8ec81dc74d4510c8e1591c34d83ea7473dde5478f8",
+      "txHash": "0x03b0e7e9517e2473ef88baf34db5b038ac7fd17068d39da8acbfab06564ca5ba",
       "kind": "uups"
     },
     {
       "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
-      "txHash": "0x2cb38fcda6056da881945520990fe0bc2c9b0333787f666d126b9737e0d8914d",
+      "txHash": "0x248b7eb5be8e003a84a63ea34cad8a2976b69709c915a7082bdd6ed8f6913498",
       "kind": "uups"
     },
     {
       "address": "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d",
-      "txHash": "0xaae824edef99b34b7ff12f2fdb20910ba36df49078925aec98bb1508905404d8",
+      "txHash": "0x59f5b036b0dee966bd73db2fe495d5bec3ba211718fe18aa4168a4508834923d",
+      "kind": "uups"
+    },
+    {
+      "address": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f",
+      "txHash": "0x4f733b470b25a83ab2c6fa7a8bc32be4fa1a9cd69f8ef73d0f17242d3425e62e",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4A679253410272dd5232B3Ff7cF5dbB88f295319",
+      "txHash": "0xa807cc91a69c0735138540bd063b30019687cb0853e46bd4a53646fa6c3c5e88",
+      "kind": "uups"
+    },
+    {
+      "address": "0x09635F643e140090A9A8Dcd712eD6285858ceBef",
+      "txHash": "0xacbeae7ad780d1c02fc584c1247aa9211bd3b4107c7c2d2af966e7df895f3d60",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
+      "txHash": "0xe79cb80f3bf4ecada87be21f2aa953247eda9e3ecff4479a292c0422f1a514c9",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc3e53F4d16Ae77Db1c982e75a937B9f60FE63690",
+      "txHash": "0x35c2a45a7b18e96072d6cad023a6f577c9e8c1638c8fdddfc83ad3119c03e2fa",
+      "kind": "uups"
+    },
+    {
+      "address": "0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB",
+      "txHash": "0xa9c9dfe5e9964ebdb0a259c7cebb9375feea5df5283ab480c79844b34c2636f5",
       "kind": "uups"
     }
   ],
   "impls": {
-    "52e5dfad9fc0e8cf43035ddb37e8d7bf2aecdef2958e4f210e1503f5f7a85983": {
+    "a6a66a16559f21a4b9fd99b6cb43f050d4cd8b3bdcee73ef8f377672a19bc5d1": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0x19bb400da968ded224452ea4dc16a2237683b57da9e9a99c64d2fc78bbc86415",
+      "txHash": "0xf19113a347b23d8f90a3c87c0a18ab9b1d8538fa0ed698908c52a09886e2270c",
       "layout": {
         "storage": [
           {
@@ -161,18 +181,6 @@
             "src": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol:42"
           },
           {
-            "contract": "ERC1967UpgradeUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)50_storage",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:215"
-          },
-          {
-            "contract": "UUPSUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)50_storage",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:81"
-          },
-          {
             "contract": "OwnableUpgradeable",
             "label": "_owner",
             "type": "t_address",
@@ -185,112 +193,124 @@
             "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:82"
           },
           {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:215"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:81"
+          },
+          {
             "contract": "Shine",
             "label": "charityWallet",
             "type": "t_address",
-            "src": "contracts/Shine.sol:17"
+            "src": "contracts/Shine.sol:14"
           },
           {
             "contract": "Shine",
             "label": "marketingWallet",
             "type": "t_address",
-            "src": "contracts/Shine.sol:18"
+            "src": "contracts/Shine.sol:15"
           },
           {
             "contract": "Shine",
             "label": "charityFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:20"
+            "src": "contracts/Shine.sol:17"
           },
           {
             "contract": "Shine",
             "label": "redistributionFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:21"
+            "src": "contracts/Shine.sol:18"
           },
           {
             "contract": "Shine",
             "label": "marketingFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:22"
+            "src": "contracts/Shine.sol:19"
           },
           {
             "contract": "Shine",
             "label": "_previousCharityFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:24"
+            "src": "contracts/Shine.sol:21"
           },
           {
             "contract": "Shine",
             "label": "_previousRedistributionFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:25"
+            "src": "contracts/Shine.sol:22"
           },
           {
             "contract": "Shine",
             "label": "_previousMarketingFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:26"
+            "src": "contracts/Shine.sol:23"
           },
           {
             "contract": "Shine",
             "label": "_rOwned",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:28"
+            "src": "contracts/Shine.sol:25"
           },
           {
             "contract": "Shine",
             "label": "_tOwned",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:29"
+            "src": "contracts/Shine.sol:26"
           },
           {
             "contract": "Shine",
             "label": "_allowances",
             "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
-            "src": "contracts/Shine.sol:30"
+            "src": "contracts/Shine.sol:27"
           },
           {
             "contract": "Shine",
             "label": "_isExcluded",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:32"
+            "src": "contracts/Shine.sol:29"
           },
           {
             "contract": "Shine",
             "label": "_excluded",
             "type": "t_array(t_address)dyn_storage",
-            "src": "contracts/Shine.sol:33"
+            "src": "contracts/Shine.sol:30"
           },
           {
             "contract": "Shine",
             "label": "_tTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:35"
+            "src": "contracts/Shine.sol:32"
           },
           {
             "contract": "Shine",
             "label": "_rTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:36"
+            "src": "contracts/Shine.sol:33"
           },
           {
             "contract": "Shine",
             "label": "_tFeeTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:37"
+            "src": "contracts/Shine.sol:34"
           },
           {
             "contract": "Shine",
             "label": "_currentRate",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:38"
+            "src": "contracts/Shine.sol:35"
           },
           {
             "contract": "Shine",
             "label": "_isFeeExempted",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:40"
+            "src": "contracts/Shine.sol:37"
           }
         ],
         "types": {
@@ -315,11 +335,11 @@
           "t_array(t_address)dyn_storage": {
             "label": "address[]"
           },
-          "t_array(t_uint256)49_storage": {
-            "label": "uint256[49]"
-          },
           "t_array(t_uint256)50_storage": {
             "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
           },
           "t_string_storage": {
             "label": "string"
@@ -330,9 +350,9 @@
         }
       }
     },
-    "42bd8f2931630fd1d8a32832801119e95911e55edb7d262e5b19211d9fe998c4": {
+    "6d2a8a9c130c18361f383aad51253c7a198e1bf6797a5611aeebd41997f53013": {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0x740ebb746fb7b4a2cdc82dd840eb5684fa5cd8c9976e525116ba3c59fe82b876",
+      "txHash": "0x91ce26e4a1a4c32ae355b2bf998d9de12e6c75ba64de38032b455e3ed2604b5d",
       "layout": {
         "storage": [
           {
@@ -408,18 +428,6 @@
             "src": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol:42"
           },
           {
-            "contract": "ERC1967UpgradeUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)50_storage",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:215"
-          },
-          {
-            "contract": "UUPSUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)50_storage",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:81"
-          },
-          {
             "contract": "OwnableUpgradeable",
             "label": "_owner",
             "type": "t_address",
@@ -432,112 +440,124 @@
             "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:82"
           },
           {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:215"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:81"
+          },
+          {
             "contract": "Shine",
             "label": "charityWallet",
             "type": "t_address",
-            "src": "contracts/Shine.sol:17"
+            "src": "contracts/Shine.sol:14"
           },
           {
             "contract": "Shine",
             "label": "marketingWallet",
             "type": "t_address",
-            "src": "contracts/Shine.sol:18"
+            "src": "contracts/Shine.sol:15"
           },
           {
             "contract": "Shine",
             "label": "charityFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:20"
+            "src": "contracts/Shine.sol:17"
           },
           {
             "contract": "Shine",
             "label": "redistributionFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:21"
+            "src": "contracts/Shine.sol:18"
           },
           {
             "contract": "Shine",
             "label": "marketingFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:22"
+            "src": "contracts/Shine.sol:19"
           },
           {
             "contract": "Shine",
             "label": "_previousCharityFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:24"
+            "src": "contracts/Shine.sol:21"
           },
           {
             "contract": "Shine",
             "label": "_previousRedistributionFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:25"
+            "src": "contracts/Shine.sol:22"
           },
           {
             "contract": "Shine",
             "label": "_previousMarketingFee",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:26"
+            "src": "contracts/Shine.sol:23"
           },
           {
             "contract": "Shine",
             "label": "_rOwned",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:28"
+            "src": "contracts/Shine.sol:25"
           },
           {
             "contract": "Shine",
             "label": "_tOwned",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:29"
+            "src": "contracts/Shine.sol:26"
           },
           {
             "contract": "Shine",
             "label": "_allowances",
             "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
-            "src": "contracts/Shine.sol:30"
+            "src": "contracts/Shine.sol:27"
           },
           {
             "contract": "Shine",
             "label": "_isExcluded",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:32"
+            "src": "contracts/Shine.sol:29"
           },
           {
             "contract": "Shine",
             "label": "_excluded",
             "type": "t_array(t_address)dyn_storage",
-            "src": "contracts/Shine.sol:33"
+            "src": "contracts/Shine.sol:30"
           },
           {
             "contract": "Shine",
             "label": "_tTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:35"
+            "src": "contracts/Shine.sol:32"
           },
           {
             "contract": "Shine",
             "label": "_rTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:36"
+            "src": "contracts/Shine.sol:33"
           },
           {
             "contract": "Shine",
             "label": "_tFeeTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:37"
+            "src": "contracts/Shine.sol:34"
           },
           {
             "contract": "Shine",
             "label": "_currentRate",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:38"
+            "src": "contracts/Shine.sol:35"
           },
           {
             "contract": "Shine",
             "label": "_isFeeExempted",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:40"
+            "src": "contracts/Shine.sol:37"
           }
         ],
         "types": {
@@ -562,11 +582,11 @@
           "t_array(t_address)dyn_storage": {
             "label": "address[]"
           },
-          "t_array(t_uint256)49_storage": {
-            "label": "uint256[49]"
-          },
           "t_array(t_uint256)50_storage": {
             "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
           },
           "t_string_storage": {
             "label": "string"

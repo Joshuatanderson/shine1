@@ -77,21 +77,21 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         override
         onlyOwner {}
 
-    // function pause() public onlyOwner {
-    //     _pause();
-    // }
+    function pause() public onlyOwner {
+        _pause();
+    }
 
-    // function unpause() public onlyOwner {
-    //     _unpause();
-    // }
+    function unpause() public onlyOwner {
+        _unpause();
+    }
 
-    // function _beforeTokenTransfer(address from, address to, uint256 amount)
-    //     internal
-    //     whenNotPaused
-    //     override
-    // {
-    //     super._beforeTokenTransfer(from, to, amount);
-    // }
+    function _beforeTokenTransfer(address from, address to, uint256 amount)
+        internal
+        whenNotPaused
+        override
+    {
+        super._beforeTokenTransfer(from, to, amount);
+    }
 
 
     function totalSupply() public view override returns (uint256) {
@@ -215,21 +215,30 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
             _removeAllFees();
         }
 
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(amount);
+        (
+            uint256 rAmount, 
+            uint256 rTransferAmount, 
+            uint256 rFee, 
+            uint256 tTransferAmount, 
+            uint256 tFee, 
+            uint256 tCharity, 
+            uint256 tMarketing
+        ) = _getValues(amount);
 
-        // responsibility for getting values will be moved to _transfer.
-
-        if (_isExcluded[sender] && !_isExcluded[recipient]) {
-            _transferFromExcluded(sender, recipient, amount);
-        } else if (!_isExcluded[sender] && _isExcluded[recipient]) {
-            _transferToExcluded(sender, recipient, amount);
-        } else if (!_isExcluded[sender] && !_isExcluded[recipient]) {
-            _transferStandard(sender, recipient, amount);
-        } else if (_isExcluded[sender] && _isExcluded[recipient]) {
-            _transferBothExcluded(sender, recipient, amount);
-        } else {
-            _transferStandard(sender, recipient, amount);
+        // @dev in all transations, rOwned is adjusted for both parties
+        _rOwned[sender] = _rOwned[sender].sub(rAmount);
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);  
+        // @dev in all transactions where recipient is excluded from rewards, tRecipient is adjusted
+        if(_isExcluded[recipient]){
+            _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
         }
+
+        // @dev in all transactions where the sender is excluded from rewards, tSender is adjusted.
+        if(_isExcluded[sender]){
+            _tOwned[sender] = _tOwned[sender].sub(amount);
+        }
+
+        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
 
         emit Transfer(sender, recipient, tTransferAmount);
 
@@ -267,47 +276,53 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _reflectFee(rFee, tFee);
     }
 
-    function _transferStandard(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
+    // function _transferStandard(address sender, address recipient, uint256 tAmount) private {
+    //     (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
 
-        _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);    
+    //     _rOwned[sender] = _rOwned[sender].sub(rAmount);
+    //     _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);    
 
-        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-    }
+    //     _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
 
-    function _transferToExcluded(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
+    //     emit Transfer(sender, recipient, tTransferAmount);
+    // }
 
-        _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
+    // function _transferToExcluded(address sender, address recipient, uint256 tAmount) private {
+    //     (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
 
-        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-    }
+    //     _rOwned[sender] = _rOwned[sender].sub(rAmount);
+    //     _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
+    //     _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
 
-    function _transferFromExcluded(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
+    //     _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
 
-        _tOwned[sender] = _tOwned[sender].sub(tAmount);
-        _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
+    //     emit Transfer(sender, recipient, tTransferAmount);
+    // }
 
-       _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-    }
+    // function _transferFromExcluded(address sender, address recipient, uint256 tAmount) private {
+    //     (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
 
-    function _transferBothExcluded(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
+    //     _tOwned[sender] = _tOwned[sender].sub(tAmount);
+    //     _rOwned[sender] = _rOwned[sender].sub(rAmount);
+    //     _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
 
-        _tOwned[sender] = _tOwned[sender].sub(tAmount);
-        _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
+    //    _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
 
-        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
+    //     emit Transfer(sender, recipient, tTransferAmount);
+    // }
 
-        emit Transfer(sender, recipient, tTransferAmount);
-    }
+    // function _transferBothExcluded(address sender, address recipient, uint256 tAmount) private {
+    //     (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
+
+    //     _tOwned[sender] = _tOwned[sender].sub(tAmount);
+    //     _rOwned[sender] = _rOwned[sender].sub(rAmount);
+    //     _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
+    //     _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
+
+    //     _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
+
+    //     emit Transfer(sender, recipient, tTransferAmount);
+    // }
 
     function _reflectFee(uint256 rFee, uint256 tFee) private {
         _rTotal = _rTotal.sub(rFee);

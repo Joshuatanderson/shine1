@@ -184,9 +184,21 @@ describe("transfer behavior", async function(){
     });
 
     it("The pause event emits when pause() is called by the owner", async function(){
-      const [owner] = await hre.ethers.getSigners();
-
       expect(await shine.pause()).to.emit(shine, "Paused")
+    })
+    it("emits an unpause event the owner calls unpause()", async function(){
+      await shine.pause();
+      expect(await shine.unpause()).to.emit(shine, "Unpaused")
+
+    })
+    it("does not pause when a non-owner attempts to pause", async function(){
+      const [owner, address1] = await hre.ethers.getSigners();
+      let nonOwnerSignedShine = await shine.connect(address1);
+
+      await expect(nonOwnerSignedShine.pause())
+        .to.be.revertedWith('Ownable: caller is not the owner');
+      // expect(nonOwnerSignedShine.pause()).to.not.emit(shine, "Paused")
+
     })
   })
   
