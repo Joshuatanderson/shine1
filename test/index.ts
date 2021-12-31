@@ -72,7 +72,7 @@ describe("the upgrade process works correctly", () => {
      await shine.airdrop(airdropAccounts, airdropAmount);
      const shine2 = await hre.upgrades.upgradeProxy(shine, ShineV2);
      // upgrades via proxy to shineV2
-    //  expect(await shine2.version() === "v1.0.1");
+     expect(await shine2.version() === "v1.0.1");
      expect(await shine2.balanceOf(address1.address)).to.equal(airdropAmount);
   });
 })
