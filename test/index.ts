@@ -121,8 +121,8 @@ describe("transfer behavior", async function(){
     it("does not tax a transfer from a fee-exempt wallet to a normal wallet",async function(){
       const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
 
-      await shine.transfer(thirdPartyRecipient.address, 10000000);
-      expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000)
+      await expect(() => shine.transfer(thirdPartyRecipient.address, 10000000))
+        .to.changeTokenBalance(shine, thirdPartyRecipient, 10000000);
     })
     it("does not tax a transfer from a fee-exempt wallet to a fee-exempt wallet",async function(){
       const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
@@ -197,11 +197,6 @@ describe("transfer behavior", async function(){
 
       await expect(nonOwnerSignedShine.pause())
         .to.be.revertedWith('Ownable: caller is not the owner');
-      // expect(nonOwnerSignedShine.pause()).to.not.emit(shine, "Paused")
-
     })
   })
-  
-  // const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
-
 })
