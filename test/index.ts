@@ -61,6 +61,20 @@ describe("the upgrade process works correctly", () => {
     // upgrades via proxy to shineV2
     assert(await shine2.version() === "v1.0.1");
   });
+
+  it("Has balances persist after upgrade", async function(){
+     // arrange
+     const shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'});
+     const [owner, address1, address2] = await hre.ethers.getSigners();
+     const airdropAmount = 10000000;
+     const airdropAccounts = [address1.address, address2.address]
+     // act
+     await shine.airdrop(airdropAccounts, airdropAmount);
+     const shine2 = await hre.upgrades.upgradeProxy(shine, ShineV2);
+     // upgrades via proxy to shineV2
+    //  expect(await shine2.version() === "v1.0.1");
+     expect(await shine2.balanceOf(address1.address)).to.equal(airdropAmount);
+  });
 })
 
 describe("An airdrop", () => {
