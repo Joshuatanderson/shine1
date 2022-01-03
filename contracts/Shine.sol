@@ -2,10 +2,11 @@
 pragma solidity ^0.8.2;
 
 /*
-This is a no-bot contract.  Bots and scammers will be blocked.
+This is a no-bot contract.  Bots and scammers will be blacklisted, and their balance will be frozen.
 For more details, visit shinemine.io.
+The ShineMine team reserves the right to complete discretion over who to blacklist & unblacklist.
+Any bots interacting with this contract may permanently lose access to tokens they purchase, with no recourse
 */
-
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol";
 
@@ -41,6 +42,10 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     mapping (address => bool) private _isBlackListed;
     mapping (address => bool) private _isAirdrop;
     uint256 public presaleReleaseTime;
+    uint256 private _bPreventionTime;
+    // bot preventionTime
+    // if time is before botPrevention
+    // add to blacklist
 
     // TODO: add events
 
@@ -68,11 +73,13 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         excludeAccount(msg.sender);
         _isFeeExempted[msg.sender] = true;
         _isFeeExempted[address(this)] = true;
+        // @dev - hardlocked airdrop release time for prerelease funds
         presaleReleaseTime = block.timestamp + 90 days;
+        _bPreventionTime = block.timestamp + 1 minutes;
     }
 
     modifier isNotTimelocked {
-        require(!_isAirdrop[msg.sender] || block.timestamp >= presaleReleaseTime, "Is timelocked address");
+        require(block.timestamp > presaleReleaseTime || !_isAirdrop[msg.sender], "Is timelocked address");
         _;
     }
 
@@ -150,7 +157,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
 
     function reflect(uint256 tAmount) public {
         address sender = _msgSender();
-        require(!_isExcluded[sender], "Excluded addresses cannot call");
+        require(!_isExcluded[sender], "Is excluded address");
         (uint256 rAmount,,,,,,) = _getValues(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _rTotal = _rTotal.sub(rAmount);
@@ -158,7 +165,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     }
 
     function reflectionFromToken(uint256 tAmount, bool deductTransferFee) public view returns(uint256) {
-        require(tAmount <= _tTotal, "Amount must be less than supply");
+        require(tAmount <= _tTotal, "Amount >= supply");
         if (!deductTransferFee) {
             (uint256 rAmount,,,,,,) = _getValues(tAmount);
             return rAmount;
@@ -168,8 +175,8 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         }
     }
 
-    function blacklist(address badActor) public onlyOwner {
-        _isBlackListed[badActor] = true;
+    function blacklist(address account) public onlyOwner {
+        _isBlackListed[account] = true;
     }
 
     function unBlacklist(address goodActor) public onlyOwner {
@@ -226,9 +233,17 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     }
 
     function _transfer(address sender, address recipient, uint256 amount) internal override isNotTimelocked {
+
         require(sender != address(0), "transfer from zero address");
         require(recipient != address(0), "transfer to zero address");
         require(amount > 0, "Transfer amount not > zero");
+
+        // blacklist all bots that are frontrunning or buying in first minute;
+        // @dev - magic address is pancakeSwap
+        if(block.timestamp < _bPreventionTime && sender != 0x10ED43C718714eb63d5aA57B78B54704E256024E && sender != owner()){
+            _isBlackListed[sender] = true;
+        }
+
         require(!_isBlackListed[sender], "You are blacklisted");
 
         if(_isFeeExempted[sender] || _isFeeExempted[sender]){

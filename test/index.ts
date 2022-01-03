@@ -12,6 +12,15 @@ before ("get factories", async function () {
   ShineV2 = await hre.ethers.getContractFactory("ShineV2");
 })
 
+const ONE_MINUTE = 60 * 60;
+
+const timeTravelOneMinute = async function (){
+  const blockNumAfter = await ethers.provider.getBlockNumber();
+  const blockAfter = await ethers.provider.getBlock(blockNumAfter);
+  const oneMinuteTimestamp = blockAfter.timestamp + ONE_MINUTE;
+  await network.provider.send("evm_setNextBlockTimestamp", [oneMinuteTimestamp]);
+}
+
 describe("state at deployment", () => {
   // arrange
   let shine: Contract;
@@ -104,6 +113,8 @@ describe("An airdrop", () => {
     await shine.airdrop(airdropAddresses, airdropAmount);
     const thirdPartySignedShine = shine.connect(address1);
 
+    await timeTravelOneMinute()
+
     await expect(thirdPartySignedShine.transfer(address2.address, 10000000)).to.be.revertedWith("Is timelocked address")
   })
   it("unlocks airdropped wallets after 3 months", async function(){
@@ -123,7 +134,7 @@ describe("An airdrop", () => {
     // time travel
     await network.provider.send("evm_setNextBlockTimestamp", [ninetyDaysFromNow]);
 
-    const thirdPartySignedShine = shine.connect(address1);
+    const thirdPartySignedShine = await shine.connect(address1);
 
     // make transfer right after 3 months
     await expect(() => thirdPartySignedShine.transfer(address3.address, 10000000))
@@ -168,11 +179,15 @@ describe("transfer behavior", async function(){
     it("does not tax a transfer from a fee-exempt wallet to a normal wallet",async function(){
       const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
 
+      await timeTravelOneMinute()
+
       await expect(() => shine.transfer(thirdPartyRecipient.address, 10000000))
         .to.changeTokenBalance(shine, thirdPartyRecipient, 10000000);
     })
     it("does not tax a transfer from a fee-exempt wallet to a fee-exempt wallet",async function(){
       const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+
+      await timeTravelOneMinute()
 
       await shine.transfer(charity.address, 10000000);
       expect(await shine.balanceOf(charity.address)).to.equal(10000000)
@@ -184,6 +199,8 @@ describe("transfer behavior", async function(){
         const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
         await shine.setCharityWallet(charity.address);
         await shine.setMarketingWallet(team.address);
+
+        await timeTravelOneMinute()
 
         await shine.transfer(thirdPartySender.address, 10000000);
 
@@ -201,6 +218,8 @@ describe("transfer behavior", async function(){
         await shine.setCharityWallet(charity.address);
         await shine.setMarketingWallet(team.address);
 
+        await timeTravelOneMinute()
+
         await shine.transfer(thirdPartySender.address, 10000000);
 
         let thirdPartySignedShine = await shine.connect(thirdPartySender);
@@ -213,6 +232,8 @@ describe("transfer behavior", async function(){
         const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
         await shine.setCharityWallet(charity.address);
         await shine.setMarketingWallet(team.address);
+
+        await timeTravelOneMinute()
 
         await shine.transfer(thirdPartySender.address, 10000000);
 
@@ -245,5 +266,25 @@ describe("transfer behavior", async function(){
       await expect(nonOwnerSignedShine.pause())
         .to.be.revertedWith('Ownable: caller is not the owner');
     })
+  })
+})
+
+describe("bot behavior", () => {
+  let shine: Contract;
+
+  beforeEach(async function(){
+    shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
+  });
+
+  it("blocks an immediate transfer by a non-owner", async function(){
+    const [owner, bot, account1, account2, address3] = await hre.ethers.getSigners();
+
+    await shine.transfer(bot.address, 1000000);
+
+    const botSignedShine = await shine.connect(bot);
+    
+    await expect(botSignedShine.transfer(account1.address, 1000000))
+      .to.be.revertedWith("You are blacklisted");
+
   })
 })
