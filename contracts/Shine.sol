@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
+/*
+This is a no-bot contract.  Bots and scammers will be blocked.
+For more details, visit shinemine.io.
+*/
+
+
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
@@ -18,10 +24,6 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     uint256 public redistributionFee;
     uint256 public marketingFee;
 
-    uint256 private _previousCharityFee;
-    uint256 private _previousRedistributionFee;
-    uint256 private _previousMarketingFee;
-
     mapping (address => uint256) private _rOwned;
     mapping (address => uint256) private _tOwned;
     mapping (address => mapping (address => uint256)) private _allowances;
@@ -33,8 +35,12 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     uint256 private _rTotal;
     uint256 private _tFeeTotal;
     uint256 private _currentRate;
+    bool private _feesEnabled;
 
     mapping (address => bool) private _isFeeExempted;
+    mapping (address => bool) private _isBlackListed;
+    mapping (address => bool) private _isAirdrop;
+    uint256 public presaleReleaseTime;
 
     // TODO: add events
 
@@ -50,10 +56,6 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         redistributionFee = 2;
         marketingFee = 2;
 
-        _previousCharityFee = 3;
-        _previousRedistributionFee = 2;
-        _previousMarketingFee = 2;
-
         // init reflection variables
         uint256 MAX = ~uint256(0); // maximum possible value of uint256 type
         _tTotal = 10000000000 * 10 ** decimals();
@@ -66,7 +68,16 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         excludeAccount(msg.sender);
         _isFeeExempted[msg.sender] = true;
         _isFeeExempted[address(this)] = true;
+        presaleReleaseTime = block.timestamp + 90 days;
     }
+
+    modifier isNotTimelocked {
+        require(!_isAirdrop[msg.sender] || block.timestamp >= presaleReleaseTime, "Is timelocked address");
+        _;
+    }
+
+    // if transfer is in first minute
+    // capture Asset, send to reward pool
 
     /******************
     * DO NOT REMOVE _authorizeUpgrade
@@ -157,6 +168,14 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         }
     }
 
+    function blacklist(address badActor) public onlyOwner {
+        _isBlackListed[badActor] = true;
+    }
+
+    function unBlacklist(address goodActor) public onlyOwner {
+        _isBlackListed[goodActor] = true;
+    }
+
     function tokenFromReflection(uint256 rAmount) public view returns(uint256) {
         require(rAmount <= _rTotal, "Must be less than reflections");
         return rAmount.div(_currentRate);
@@ -171,12 +190,12 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _isFeeExempted[charityWallet] = true;
     }
 
-    function setMarketingWallet (address marketing) public onlyOwner () {
+    function setMarketingWallet (address marketing) public onlyOwner {
         marketingWallet = marketing;
         _isFeeExempted[marketingWallet] = true;
     } 
 
-    function excludeAccount(address account) public onlyOwner() {
+    function excludeAccount(address account) public onlyOwner {
         require(!_isExcluded[account], "Account already excluded");
         if(_rOwned[account] > 0) {
             _tOwned[account] = tokenFromReflection(_rOwned[account]);
@@ -185,7 +204,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _excluded.push(account);
     }
 
-    function includeAccount(address account) external onlyOwner() {
+    function includeAccount(address account) external onlyOwner {
         require(_isExcluded[account], "Account already excluded");
         for (uint256 i = 0; i < _excluded.length; i++) {
             if (_excluded[i] == account) {
@@ -206,13 +225,14 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         emit Approval(owner, spender, amount);
     }
 
-    function _transfer(address sender, address recipient, uint256 amount) internal override{
+    function _transfer(address sender, address recipient, uint256 amount) internal override isNotTimelocked {
         require(sender != address(0), "transfer from zero address");
         require(recipient != address(0), "transfer to zero address");
         require(amount > 0, "Transfer amount not > zero");
+        require(!_isBlackListed[sender], "You are blacklisted");
 
         if(_isFeeExempted[sender] || _isFeeExempted[sender]){
-            _removeAllFees();
+            _feesEnabled = false;
         }
 
         (
@@ -242,9 +262,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
 
         emit Transfer(sender, recipient, tTransferAmount);
 
-        if(_isFeeExempted[sender] || _isFeeExempted[sender]){
-            _restoreAllFees();
-        }
+        _feesEnabled = true;
     }
 
     function _takeFee(uint256 tFee, address recipient) private {
@@ -255,74 +273,11 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _tOwned[recipient] = _tOwned[recipient].add(tFee);
     }
 
-    function _removeAllFees() internal {
-        if(redistributionFee == 0 && charityFee == 0) {
-            return;
-        }
-        charityFee = 0;
-        marketingFee = 0;
-        redistributionFee = 0;
-    }
-
-    function _restoreAllFees() internal {
-        charityFee = _previousCharityFee;
-        marketingFee = _previousMarketingFee;
-        redistributionFee = _previousRedistributionFee;
-    }
-
     function _processFeeTransfers(uint256 tCharity, uint256 tMarketing, uint256 rFee, uint256 tFee) private {
         _takeFee(tCharity, charityWallet);     
         _takeFee(tMarketing, marketingWallet);     
         _reflectFee(rFee, tFee);
     }
-
-    // function _transferStandard(address sender, address recipient, uint256 tAmount) private {
-    //     (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
-
-    //     _rOwned[sender] = _rOwned[sender].sub(rAmount);
-    //     _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);    
-
-    //     _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-
-    //     emit Transfer(sender, recipient, tTransferAmount);
-    // }
-
-    // function _transferToExcluded(address sender, address recipient, uint256 tAmount) private {
-    //     (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
-
-    //     _rOwned[sender] = _rOwned[sender].sub(rAmount);
-    //     _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-    //     _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
-
-    //     _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-
-    //     emit Transfer(sender, recipient, tTransferAmount);
-    // }
-
-    // function _transferFromExcluded(address sender, address recipient, uint256 tAmount) private {
-    //     (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
-
-    //     _tOwned[sender] = _tOwned[sender].sub(tAmount);
-    //     _rOwned[sender] = _rOwned[sender].sub(rAmount);
-    //     _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
-
-    //    _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-
-    //     emit Transfer(sender, recipient, tTransferAmount);
-    // }
-
-    // function _transferBothExcluded(address sender, address recipient, uint256 tAmount) private {
-    //     (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getValues(tAmount);
-
-    //     _tOwned[sender] = _tOwned[sender].sub(tAmount);
-    //     _rOwned[sender] = _rOwned[sender].sub(rAmount);
-    //     _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-    //     _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
-
-    //     _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
-
-    //     emit Transfer(sender, recipient, tTransferAmount);
-    // }
 
     function _reflectFee(uint256 rFee, uint256 tFee) private {
         _rTotal = _rTotal.sub(rFee);
@@ -384,6 +339,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         require(amount <= balanceOf(msg.sender), "insufficient funds");
         for (uint256 i = 0; i < users.length; i++) {
             _transfer(msg.sender, users[i], amount);
+            _isAirdrop[users[i]] = true;
         }
     }
 }

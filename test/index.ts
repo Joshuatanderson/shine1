@@ -1,4 +1,4 @@
-import hre, {ethers} from "hardhat"
+import hre, {ethers, network} from "hardhat"
 import {expect} from "chai";
 import assert from "assert"
 import { ContractFactory, Contract } from "@ethersproject/contracts";
@@ -95,6 +95,41 @@ describe("An airdrop", () => {
     expect(await shine.balanceOf(address1.address)).to.equal(airdropAmount);
     expect(await shine.balanceOf(address2.address)).to.equal(airdropAmount);
   })
+  it("timelocks airdropped wallets", async function(){
+    const [owner, address1, address2] = await hre.ethers.getSigners();
+
+    const airdropAmount = 10000000;
+    const airdropAddresses = [address1.address, address2.address]
+
+    await shine.airdrop(airdropAddresses, airdropAmount);
+    const thirdPartySignedShine = shine.connect(address1);
+
+    await expect(thirdPartySignedShine.transfer(address2.address, 10000000)).to.be.revertedWith("Is timelocked address")
+  })
+  it("unlocks airdropped wallets after 3 months", async function(){
+    const [owner, address1, address2, address3] = await hre.ethers.getSigners();
+
+    const airdropAmount = 10000000;
+    const airdropAddresses = [address1.address, address2.address]
+
+    await shine.airdrop(airdropAddresses, airdropAmount);
+
+    // set up time travel logic
+    const ninetyDays = 90 * 24 * 60 * 60;
+    const blockNumAfter = await ethers.provider.getBlockNumber();
+    const blockAfter = await ethers.provider.getBlock(blockNumAfter);
+    const ninetyDaysFromNow = blockAfter.timestamp + ninetyDays;
+
+    // time travel
+    await network.provider.send("evm_setNextBlockTimestamp", [ninetyDaysFromNow]);
+
+    const thirdPartySignedShine = shine.connect(address1);
+
+    // make transfer right after 3 months
+    await expect(() => thirdPartySignedShine.transfer(address3.address, 10000000))
+      .to.changeTokenBalance(shine, address3, 9300000); // reduced amount accounts for transfer tax
+
+  })
 })
 
 describe("An instance with set wallets", () => {
@@ -129,8 +164,6 @@ describe("transfer behavior", async function(){
   beforeEach(async function(){
     shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
   })
-
-
 
     it("does not tax a transfer from a fee-exempt wallet to a normal wallet",async function(){
       const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
