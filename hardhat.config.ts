@@ -5,7 +5,10 @@ import '@nomiclabs/hardhat-ethers';
 import '@openzeppelin/hardhat-upgrades';
 import "hardhat-contract-sizer"
 
-import {CONSTANTS} from "./env";
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const {ROPSTEN_PRIVATE_KEY, ALCHEMY_API_KEY} = process.env;
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -24,8 +27,8 @@ module.exports = {
   solidity: "0.8.2",
   networks: {
     ropsten: {
-      url: `https://eth-ropsten.alchemyapi.io/v2/${CONSTANTS.ALCHEMY_API_KEY}`,
-      accounts: [`${CONSTANTS.ROPSTEN_PRIVATE_KEY}`]
+      url: `https://eth-ropsten.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+      accounts: [`${ROPSTEN_PRIVATE_KEY}`]
     }
   }
 };

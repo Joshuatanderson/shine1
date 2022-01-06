@@ -24,7 +24,6 @@
     "eslint-plugin-promise": "^5.2.0",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.2",
-    "hardhat": "^2.8.0",
     "hardhat-contract-sizer": "^2.3.0",
     "hardhat-gas-reporter": "^1.0.6",
     "husky": "^7.0.4",
@@ -43,6 +42,7 @@
   "scripts": {
     "prepare": "husky install",
     "test": "npx hardhat test",
-    "contract-size": "npx hardhat size-contracts"
+    "contract-size": "npx hardhat size-contracts",
+    "deploy:ropsten": "npx hardhat run ./scripts/deploy.ts --network ropsten"
   }
 }
