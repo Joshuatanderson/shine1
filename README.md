@@ -1,7 +1,7 @@
 # Key tools used
 
-- Open Zeppelin
-Open Zeppelin has a fantastic collection of community vetted code.  The core of the SHINE contract is based on this.
+- Open Zeppelin has a fantastic collection of community vetted code.  The core of the SHINE contract is based on this.
+- Solidity (but if you're on this page, you probably figured that out on your own) :)
 
 ## Dev environment
 
