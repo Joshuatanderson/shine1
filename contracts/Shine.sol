@@ -20,10 +20,12 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     // set privileged wallets
     address public charityWallet;
     address public marketingWallet;
+    address public liquidityWallet;
 
-    uint256 public charityFee;
-    uint256 public redistributionFee;
-    uint256 public marketingFee;
+    // due to space limitations in solidity contracts, we opted to use a single, non-updatable fee variable.
+    // this is because all SHINE fees happened to be 2% anyways.  
+    // because of this, adjusting the amount of fees will require a contract upgrade
+    uint public feePercentage;
 
     mapping (address => uint256) private _rOwned;
     mapping (address => uint256) private _tOwned;
@@ -57,9 +59,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
 
         _mint(msg.sender, 10000000000 * 10 ** decimals());
 
-        charityFee = 3;
-        redistributionFee = 2;
-        marketingFee = 2;
+        feePercentage = 2;
 
         // init reflection variables
         uint256 MAX = ~uint256(0); // maximum possible value of uint256 type
@@ -158,7 +158,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     function reflect(uint256 tAmount) public {
         address sender = _msgSender();
         require(!_isExcluded[sender], "Is excluded address");
-        (uint256 rAmount,,,,,,) = _getValues(tAmount);
+        (uint256 rAmount,,,,) = _getValues(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _rTotal = _rTotal.sub(rAmount);
         _tFeeTotal = _tFeeTotal.add(tAmount);
@@ -167,10 +167,10 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     function reflectionFromToken(uint256 tAmount, bool deductTransferFee) public view returns(uint256) {
         require(tAmount <= _tTotal, "Amount >= supply");
         if (!deductTransferFee) {
-            (uint256 rAmount,,,,,,) = _getValues(tAmount);
+            (uint256 rAmount,,,,) = _getValues(tAmount);
             return rAmount;
         } else {
-            (,uint256 rTransferAmount,,,,,) = _getValues(tAmount);
+            (,uint256 rTransferAmount,,,) = _getValues(tAmount);
             return rTransferAmount;
         }
     }
@@ -200,6 +200,11 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     function setMarketingWallet (address marketing) public onlyOwner {
         marketingWallet = marketing;
         _isFeeExempted[marketingWallet] = true;
+    } 
+
+    function setLiquidityWallet (address liquidity) public onlyOwner {
+        liquidityWallet = liquidity;
+        _isFeeExempted[liquidityWallet] = true;
     } 
 
     function excludeAccount(address account) public onlyOwner {
@@ -255,9 +260,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
             uint256 rTransferAmount, 
             uint256 rFee, 
             uint256 tTransferAmount, 
-            uint256 tFee, 
-            uint256 tCharity, 
-            uint256 tMarketing
+            uint256 tFee
         ) = _getValues(amount);
 
         // @dev in all transations, rOwned is adjusted for both parties
@@ -273,7 +276,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
             _tOwned[sender] = _tOwned[sender].sub(amount);
         }
 
-        _processFeeTransfers(tCharity, tMarketing, rFee, tFee);
+        _processFeeTransfers(rFee, tFee);
 
         emit Transfer(sender, recipient, tTransferAmount);
 
@@ -288,9 +291,10 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _tOwned[recipient] = _tOwned[recipient].add(tFee);
     }
 
-    function _processFeeTransfers(uint256 tCharity, uint256 tMarketing, uint256 rFee, uint256 tFee) private {
-        _takeFee(tCharity, charityWallet);     
-        _takeFee(tMarketing, marketingWallet);     
+    function _processFeeTransfers( uint256 rFee, uint256 tFee) private {
+        _takeFee(tFee, charityWallet);     
+        _takeFee(tFee, marketingWallet);     
+        _takeFee(tFee, liquidityWallet);
         _reflectFee(rFee, tFee);
     }
 
@@ -299,32 +303,28 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _tFeeTotal = _tFeeTotal.add(tFee);
     }
 
-    function _getValues(uint256 tAmount) private view returns (uint256, uint256, uint256, uint256, uint256, uint256, uint256) {
-        (uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) = _getTValues(tAmount);
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee) = _getRValues(tAmount, tFee, tCharity, tMarketing);
-        return (rAmount, rTransferAmount, rFee, tTransferAmount, tFee, tCharity, tMarketing);
+    function _getValues(uint256 tAmount) private view returns (uint256, uint256, uint256, uint256, uint256) {
+        (uint256 tTransferAmount, uint256 tFee) = _getTValues(tAmount);
+        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee) = _getRValues(tAmount, tFee);
+        return (rAmount, rTransferAmount, rFee, tTransferAmount, tFee);
     }
 
-    function _getTValues(uint256 tAmount) private view returns (uint256, uint256, uint256, uint256){
+    function _getTValues(uint256 tAmount) private view returns (uint256, uint256){
         if(_isFeeExempted[msg.sender]){
-            return (tAmount, 0, 0, 0);
+            return (tAmount, 0);
         }
 
-        uint256 tFee = tAmount.mul(redistributionFee).div(100);
-        uint256 tCharity = tAmount.mul(charityFee).div(100);
-        uint256 tMarketing = tAmount.mul(marketingFee).div(100);
+        uint256 tFee = tAmount.mul(feePercentage).div(100);
 
-        uint256 tTransferAmount = tAmount.sub(tFee).sub(tCharity).sub(tMarketing);
-        return (tTransferAmount, tFee, tCharity, tMarketing);
+        uint256 tTransferAmount = tAmount.sub(feePercentage).sub(feePercentage).sub(feePercentage).sub(feePercentage); // 100% - 2% * 4, for all fees
+        return (tTransferAmount, tFee);
     }
 
-    function _getRValues(uint256 tAmount, uint256 tFee, uint256 tCharity, uint256 tMarketing) private view returns (uint256, uint256, uint256) {
+    function _getRValues(uint256 tAmount, uint256 tFee) private view returns (uint256, uint256, uint256) {
         uint256 rAmount = tAmount.mul(_currentRate);
         uint256 rFee = tFee.mul(_currentRate);
-        uint256 rCharity = tCharity.mul(_currentRate);
-        uint256 rMarketing = tMarketing.mul(_currentRate);
 
-        uint256 rTransferAmount = rAmount.sub(rFee).sub(rCharity).sub(rMarketing);
+        uint256 rTransferAmount = rAmount.sub(rFee).sub(rFee).sub(rFee).sub(rFee);
         return (rAmount, rTransferAmount, rFee);
     }
 
