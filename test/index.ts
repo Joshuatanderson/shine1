@@ -163,7 +163,7 @@ describe("An airdrop", () => {
       .to.changeTokenBalance(shine, address3, 9200000); // reduced amount accounts for transfer tax
 
   })
-  it("unlocks airdropped wallets after 4 months when set to 150 days", async function(){
+  it("unlocks airdropped wallets after 5 months when set to 150 days", async function(){
     const [owner, address1, address2, address3] = await hre.ethers.getSigners();
 
     const airdropAmount = 10000000;
@@ -197,7 +197,7 @@ describe("An instance with set wallets", () => {
   })
 
   it("initializes wallets", async function(){
-    const [, charity, team] = await hre.ethers.getSigners();
+    const [, charity, team, liquidity] = await hre.ethers.getSigners();
 
     it("sets up the charity wallet", async function(){
       await shine.setCharityWallet(charity);
@@ -207,6 +207,10 @@ describe("An instance with set wallets", () => {
     it("sets up the team wallet", async function(){
       await shine.setMarketingWallet(team);
       expect(await shine.marketingWallet() === team)
+    })
+    it("sets up the liquidity wallet", async function(){
+      await shine.setLiquidityWallet(liquidity);
+      expect(await shine.marketingWallet() === liquidity)
     })
   })
 })
@@ -260,9 +264,10 @@ describe("transfer behavior", async function(){
         expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000 * .92)
       })
       it("the charity wallet has 2% of the transfer", async function(){
-        const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        const [owner, charity, team, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
         await shine.setCharityWallet(charity.address);
         await shine.setMarketingWallet(team.address);
+        await shine.setLiquidityWallet(liquidity.address);
 
         await timeTravelOneMinute()
 
@@ -275,9 +280,10 @@ describe("transfer behavior", async function(){
         expect(await shine.balanceOf(charity.address)).to.equal(10000000 * .02)
       })
       it("the marketing wallet has 2% of the transfer", async function() {
-        const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        const [owner, charity, team, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
         await shine.setCharityWallet(charity.address);
         await shine.setMarketingWallet(team.address);
+        await shine.setLiquidityWallet(liquidity.address);
 
         await timeTravelOneMinute()
 
@@ -287,6 +293,21 @@ describe("transfer behavior", async function(){
 
         await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
         expect(await shine.balanceOf(team.address)).to.equal(10000000 * .02)
+      })
+      it("the liquidity wallet has 2% of the transfer", async function() {
+        const [owner, charity, team, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        await shine.setCharityWallet(charity.address);
+        await shine.setMarketingWallet(team.address);
+        await shine.setLiquidityWallet(liquidity.address);
+
+        await timeTravelOneMinute()
+
+        await shine.transfer(thirdPartySender.address, 10000000);
+
+        let thirdPartySignedShine = await shine.connect(thirdPartySender);
+
+        await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
+        expect(await shine.balanceOf(liquidity.address)).to.equal(10000000 * .02)
       })
     });
 
