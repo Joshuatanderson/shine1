@@ -42,8 +42,8 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
 
     mapping (address => bool) private _isFeeExempted;
     mapping (address => bool) private _isBlackListed;
-    mapping (address => bool) private _isAirdrop;
-    uint256 public presaleReleaseTime;
+    mapping (address => uint256) public _airdropUnlockTime;
+    // uint256 public presaleReleaseTime;
     uint256 private _bPreventionTime;
     // bot preventionTime
     // if time is before botPrevention
@@ -74,12 +74,12 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _isFeeExempted[msg.sender] = true;
         _isFeeExempted[address(this)] = true;
         // @dev - hardlocked airdrop release time for prerelease funds
-        presaleReleaseTime = block.timestamp + 90 days;
+        // presaleReleaseTime = block.timestamp + 90 days;
         _bPreventionTime = block.timestamp + 1 minutes;
     }
 
     modifier isNotTimelocked {
-        require(block.timestamp > presaleReleaseTime || !_isAirdrop[msg.sender], "Is timelocked address");
+        require(block.timestamp > _airdropUnlockTime[msg.sender], "Is timelocked address");
         _;
     }
 
@@ -347,14 +347,14 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
 
     // airdrops the amount to each user in the array.  
     // Should only be used for small arrays due to gas costs.
-    function airdrop(address[] memory users, uint256 amount)
+    function airdrop(address[] memory users, uint256 amount, uint256 daysLocked)
         external
         onlyOwner
     {
         require(amount <= balanceOf(msg.sender), "insufficient funds");
         for (uint256 i = 0; i < users.length; i++) {
             _transfer(msg.sender, users[i], amount);
-            _isAirdrop[users[i]] = true;
+            _airdropUnlockTime[users[i]] = block.timestamp + daysLocked * 1 days;
         }
     }
 }

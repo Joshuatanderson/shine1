@@ -71,8 +71,10 @@ describe("the upgrade process works correctly", () => {
      const [owner, address1, address2] = await hre.ethers.getSigners();
      const airdropAmount = 10000000;
      const airdropAccounts = [address1.address, address2.address]
+     const daysLocked = 90;
+
      // act
-     await shine.airdrop(airdropAccounts, airdropAmount);
+     await shine.airdrop(airdropAccounts, airdropAmount, daysLocked);
      const shine2 = await hre.upgrades.upgradeProxy(shine, ShineV2);
      // upgrades via proxy to shineV2
      expect(await shine2.version() === "v1.0.1");
@@ -91,9 +93,10 @@ describe("An airdrop", () => {
     const decimals = ethers.BigNumber.from("10").pow(18);
     const airdropAmount = hre.ethers.BigNumber.from(10000000).mul(decimals);
     const airdropAddresses = [address1.address, address2.address]
+    const daysLocked = 90;
 
 
-    await shine.airdrop(airdropAddresses, airdropAmount);
+    await shine.airdrop(airdropAddresses, airdropAmount, daysLocked);
 
     expect(await shine.balanceOf(address1.address)).to.equal(airdropAmount);
     expect(await shine.balanceOf(address2.address)).to.equal(airdropAmount);
@@ -103,21 +106,22 @@ describe("An airdrop", () => {
 
     const airdropAmount = 10000000;
     const airdropAddresses = [address1.address, address2.address]
+    const daysLocked = 90;
 
-    await shine.airdrop(airdropAddresses, airdropAmount);
+    await shine.airdrop(airdropAddresses, airdropAmount, daysLocked);
     const thirdPartySignedShine = shine.connect(address1);
 
     await timeTravelOneMinute()
 
     await expect(thirdPartySignedShine.transfer(address2.address, 10000000)).to.be.revertedWith("Is timelocked address")
   })
-  it("unlocks airdropped wallets after 3 months", async function(){
+  it("unlocks airdropped wallets after 3 months when set to 90 days", async function(){
     const [owner, address1, address2, address3] = await hre.ethers.getSigners();
 
     const airdropAmount = 10000000;
     const airdropAddresses = [address1.address, address2.address]
 
-    await shine.airdrop(airdropAddresses, airdropAmount);
+    await shine.airdrop(airdropAddresses, airdropAmount, 90);
 
     // set up time travel logic
     const ninetyDays = 90 * 24 * 60 * 60;
@@ -126,7 +130,55 @@ describe("An airdrop", () => {
     const ninetyDaysFromNow = blockAfter.timestamp + ninetyDays;
 
     // time travel
-    await network.provider.send("evm_setNextBlockTimestamp", [ninetyDaysFromNow]);
+    await network.provider.send("evm_setNextBlockTimestamp", [ninetyDaysFromNow + 1]);
+
+    const thirdPartySignedShine = await shine.connect(address1);
+
+    // make transfer right after 3 months
+    await expect(() => thirdPartySignedShine.transfer(address3.address, 10000000))
+      .to.changeTokenBalance(shine, address3, 9200000); // reduced amount accounts for transfer tax
+
+  })
+  it("unlocks airdropped wallets after 4 months when set to 120 days", async function(){
+    const [owner, address1, address2, address3] = await hre.ethers.getSigners();
+
+    const airdropAmount = 10000000;
+    const airdropAddresses = [address1.address, address2.address]
+
+    await shine.airdrop(airdropAddresses, airdropAmount, 120);
+
+    // set up time travel logic
+    const OneTwentyDays = 120 * 24 * 60 * 60; //120 days
+    const blockNumAfter = await ethers.provider.getBlockNumber();
+    const blockAfter = await ethers.provider.getBlock(blockNumAfter);
+    const OneTwentyDaysFromNow = blockAfter.timestamp + OneTwentyDays;
+
+    // time travel
+    await network.provider.send("evm_setNextBlockTimestamp", [OneTwentyDaysFromNow + 1]);
+
+    const thirdPartySignedShine = await shine.connect(address1);
+
+    // make transfer right after 3 months
+    await expect(() => thirdPartySignedShine.transfer(address3.address, 10000000))
+      .to.changeTokenBalance(shine, address3, 9200000); // reduced amount accounts for transfer tax
+
+  })
+  it("unlocks airdropped wallets after 4 months when set to 150 days", async function(){
+    const [owner, address1, address2, address3] = await hre.ethers.getSigners();
+
+    const airdropAmount = 10000000;
+    const airdropAddresses = [address1.address, address2.address]
+
+    await shine.airdrop(airdropAddresses, airdropAmount, 150);
+
+    // set up time travel logic
+    const OneFiftyDays = 150 * 24 * 60 * 60; //150 days
+    const blockNumAfter = await ethers.provider.getBlockNumber();
+    const blockAfter = await ethers.provider.getBlock(blockNumAfter);
+    const OneFiftyDaysFromNow = blockAfter.timestamp + OneFiftyDays;
+
+    // time travel
+    await network.provider.send("evm_setNextBlockTimestamp", [OneFiftyDaysFromNow + 1]);
 
     const thirdPartySignedShine = await shine.connect(address1);
 
