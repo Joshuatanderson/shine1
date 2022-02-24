@@ -347,7 +347,7 @@ describe("bot behavior", () => {
   it("blocks an immediate transfer by a non-owner when bot trap is set", async function(){
     const [owner, bot, account1, account2, address3] = await hre.ethers.getSigners();
 
-    await shine.setBotTrap(10);
+    await shine.setBotTrap(1);
 
     await shine.transfer(bot.address, 1000000);
 
@@ -355,6 +355,21 @@ describe("bot behavior", () => {
     
     await expect(botSignedShine.transfer(account1.address, 1000000))
       .to.be.revertedWith("You are blacklisted");
+
+  })
+  it("allows transfers after bot trap expiration", async function(){
+    const [owner, bot, account1, account2, address3] = await hre.ethers.getSigners();
+
+    await shine.setBotTrap(1);
+
+    timeTravelOneMinute();
+    
+    await shine.transfer(bot.address, 1000000);
+
+    const botSignedShine = await shine.connect(bot);
+
+    await botSignedShine.transfer(account1.address, 1000000);
+    expect(await botSignedShine.balanceOf(account1.address)).to.equal(920000);
 
   })
 })
