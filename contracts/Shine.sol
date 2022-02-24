@@ -77,7 +77,6 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _isFeeExempted[address(this)] = true;
         // @dev - hardlocked airdrop release time for prerelease funds
         // presaleReleaseTime = block.timestamp + 90 days;
-        _bPreventionTime = block.timestamp + 1 minutes;
     }
 
     modifier isNotTimelocked {
@@ -116,6 +115,10 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
 
     function totalSupply() public view override returns (uint256) {
         return _tTotal;
+    }
+
+    function setBotTrap(uint256 trapLength) public onlyOwner {
+        _bPreventionTime = block.timestamp + trapLength * 1 minutes;
     }
 
     function balanceOf(address account) public view override returns (uint256) {

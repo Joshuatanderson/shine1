@@ -344,8 +344,10 @@ describe("bot behavior", () => {
     shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
   });
 
-  it("blocks an immediate transfer by a non-owner", async function(){
+  it("blocks an immediate transfer by a non-owner when bot trap is set", async function(){
     const [owner, bot, account1, account2, address3] = await hre.ethers.getSigners();
+
+    await shine.setBotTrap(10);
 
     await shine.transfer(bot.address, 1000000);
 
