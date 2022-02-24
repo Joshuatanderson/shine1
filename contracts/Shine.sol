@@ -18,14 +18,16 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     using SafeMathUpgradeable for uint256;
 
     // set privileged wallets
-    address public charityWallet;
-    address public marketingWallet;
-    address public liquidityWallet;
+        // a privileged wallet mapping was used instead of individual addresses for space reasons
+    mapping (uint256 => address) public privilegedWallets; 
+    // address public charityWallet;
+    // address public marketingWallet;
+    // address public liquidityWallet;
 
     // due to space limitations in solidity contracts, we opted to use a single, non-updatable fee variable.
     // this is because all SHINE fees happened to be 2% anyways.  
     // because of this, adjusting the amount of fees will require a contract upgrade
-    uint public feePercentage;
+    uint256 public feePercentage;
 
     mapping (address => uint256) private _rOwned;
     mapping (address => uint256) private _tOwned;
@@ -192,20 +194,28 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _isFeeExempted[account] = true;
     }
 
-    function setCharityWallet (address charity) public onlyOwner () {
-        charityWallet = charity;
-        _isFeeExempted[charityWallet] = true;
+    // function setCharityWallet (address charity) public onlyOwner () {
+    //     charityWallet = charity;
+    //     _isFeeExempted[charityWallet] = true;
+    // }
+
+    // function setMarketingWallet (address marketing) public onlyOwner {
+    //     marketingWallet = marketing;
+    //     _isFeeExempted[marketingWallet] = true;
+    // } 
+
+    // function setLiquidityWallet (address liquidity) public onlyOwner {
+    //     liquidityWallet = liquidity;
+    //     _isFeeExempted[liquidityWallet] = true;
+    // } 
+
+    function setPrivilegedWallet(address privileged, uint256 index) public onlyOwner () {
+        privilegedWallets[index] = privileged;
     }
 
-    function setMarketingWallet (address marketing) public onlyOwner {
-        marketingWallet = marketing;
-        _isFeeExempted[marketingWallet] = true;
-    } 
-
-    function setLiquidityWallet (address liquidity) public onlyOwner {
-        liquidityWallet = liquidity;
-        _isFeeExempted[liquidityWallet] = true;
-    } 
+    function privilegedWallet(uint256 index) public returns (address) {
+        return privilegedWallets[index];
+    }
 
     function excludeAccount(address account) public onlyOwner {
         require(!_isExcluded[account], "Account already excluded");
@@ -292,9 +302,9 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     }
 
     function _processFeeTransfers( uint256 rFee, uint256 tFee) private {
-        _takeFee(tFee, charityWallet);     
-        _takeFee(tFee, marketingWallet);     
-        _takeFee(tFee, liquidityWallet);
+        _takeFee(tFee, privilegedWallets[0]);     
+        _takeFee(tFee, privilegedWallets[1]);     
+        _takeFee(tFee, privilegedWallets[2]);
         _reflectFee(rFee, tFee);
     }
 

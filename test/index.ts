@@ -197,20 +197,20 @@ describe("An instance with set wallets", () => {
   })
 
   it("initializes wallets", async function(){
-    const [, charity, team, liquidity] = await hre.ethers.getSigners();
+    const [, charity, marketing, liquidity] = await hre.ethers.getSigners();
 
     it("sets up the charity wallet", async function(){
-      await shine.setCharityWallet(charity);
-      expect(await shine.charityWallet() === charity)
+      await shine.setPrivilegedWallet(charity, 0);
+      expect(await shine.privilegedWallet(0) === charity)
     })
 
-    it("sets up the team wallet", async function(){
-      await shine.setMarketingWallet(team);
-      expect(await shine.marketingWallet() === team)
+    it("sets up the marketing wallet", async function(){
+      await shine.setPrivilegedWallet(marketing, 1);
+      expect(await shine.privilegedWallet(1) === marketing)
     })
     it("sets up the liquidity wallet", async function(){
-      await shine.setLiquidityWallet(liquidity);
-      expect(await shine.marketingWallet() === liquidity)
+      await shine.setPrivilegedWallet(liquidity, 2);
+      expect(await shine.privilegedWallet(2) === liquidity)
     })
   })
 })
@@ -227,7 +227,7 @@ describe("transfer behavior", async function(){
   })
 
     it("does not tax a transfer from a fee-exempt wallet to a normal wallet",async function(){
-      const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+      const [owner, charity, marketing, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
 
       await timeTravelOneMinute()
 
@@ -235,7 +235,7 @@ describe("transfer behavior", async function(){
         .to.changeTokenBalance(shine, thirdPartyRecipient, 10000000);
     })
     it("does not tax a transfer from a fee-exempt wallet to a fee-exempt wallet",async function(){
-      const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+      const [owner, charity, marketing, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
 
       await timeTravelOneMinute()
 
@@ -246,9 +246,10 @@ describe("transfer behavior", async function(){
       // TODO: refactor to a beforeEach?
 
       it("Transfers 92% to the recipient", async function(){
-        const [owner, charity, team, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
-        await shine.setCharityWallet(charity.address);
-        await shine.setMarketingWallet(team.address);
+        const [owner, charity, marketing, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        await shine.setPrivilegedWallet(charity.address, 0);
+        await shine.setPrivilegedWallet(marketing.address, 1);
+        await shine.setPrivilegedWallet(liquidity.address, 2);
 
         await timeTravelOneMinute()
 
@@ -264,10 +265,10 @@ describe("transfer behavior", async function(){
         expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000 * .92)
       })
       it("the charity wallet has 2% of the transfer", async function(){
-        const [owner, charity, team, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
-        await shine.setCharityWallet(charity.address);
-        await shine.setMarketingWallet(team.address);
-        await shine.setLiquidityWallet(liquidity.address);
+        const [owner, charity, marketing, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        await shine.setPrivilegedWallet(charity.address, 0);
+        await shine.setPrivilegedWallet(marketing.address, 1);
+        await shine.setPrivilegedWallet(liquidity.address, 2);
 
         await timeTravelOneMinute()
 
@@ -280,10 +281,10 @@ describe("transfer behavior", async function(){
         expect(await shine.balanceOf(charity.address)).to.equal(10000000 * .02)
       })
       it("the marketing wallet has 2% of the transfer", async function() {
-        const [owner, charity, team, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
-        await shine.setCharityWallet(charity.address);
-        await shine.setMarketingWallet(team.address);
-        await shine.setLiquidityWallet(liquidity.address);
+        const [owner, charity, marketing, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        await shine.setPrivilegedWallet(charity.address, 0);
+        await shine.setPrivilegedWallet(marketing.address, 1);
+        await shine.setPrivilegedWallet(liquidity.address, 2);
 
         await timeTravelOneMinute()
 
@@ -292,13 +293,13 @@ describe("transfer behavior", async function(){
         let thirdPartySignedShine = await shine.connect(thirdPartySender);
 
         await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
-        expect(await shine.balanceOf(team.address)).to.equal(10000000 * .02)
+        expect(await shine.balanceOf(marketing.address)).to.equal(10000000 * .02)
       })
       it("the liquidity wallet has 2% of the transfer", async function() {
-        const [owner, charity, team, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
-        await shine.setCharityWallet(charity.address);
-        await shine.setMarketingWallet(team.address);
-        await shine.setLiquidityWallet(liquidity.address);
+        const [owner, charity, marketing, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+        await shine.setPrivilegedWallet(charity.address, 0);
+        await shine.setPrivilegedWallet(marketing.address, 1);
+        await shine.setPrivilegedWallet(liquidity.address, 2);
 
         await timeTravelOneMinute()
 
