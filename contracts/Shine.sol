@@ -160,6 +160,10 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         return _isExcluded[account];
     }
 
+    function setFeePercentage(uint256 newFee) public onlyOwner {
+        feePercentage = newFee;
+    }
+
     function reflect(uint256 tAmount) public {
         address sender = _msgSender();
         require(!_isExcluded[sender], "Is excluded address");

@@ -105,7 +105,7 @@ describe("An airdrop", () => {
     const [owner, address1, address2] = await hre.ethers.getSigners();
 
     const airdropAmount = 10000000;
-    const airdropAddresses = [address1.address, address2.address]
+    const airdropAddresses = [address1.address, address2.address];
     const daysLocked = 90;
 
     await shine.airdrop(airdropAddresses, airdropAmount, daysLocked);
@@ -310,7 +310,76 @@ describe("transfer behavior", async function(){
         await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
         expect(await shine.balanceOf(liquidity.address)).to.equal(10000000 * .02)
       })
+      it("account balance increases after reflection", async function() {
+        const [owner, charity, marketing, liquidity, thirdPartySender, thirdPartyRecipient0, thirdPartyRecipient1] = await hre.ethers.getSigners();
+        await shine.setPrivilegedWallet(charity.address, 0);
+        await shine.setPrivilegedWallet(marketing.address, 1);
+        await shine.setPrivilegedWallet(liquidity.address, 2);
+
+        await
+
+        await timeTravelOneMinute()
+
+        await shine.transfer(thirdPartySender.address, 30000000);
+
+        let thirdPartySignedShine = await shine.connect(thirdPartySender);
+
+        await thirdPartySignedShine.transfer(thirdPartyRecipient0.address, 10000000)
+        await thirdPartySignedShine.transfer(thirdPartyRecipient1.address, 10000000)
+        let thirdPartyRecipient0SignedShine = await shine.connect(thirdPartySender);
+
+        await thirdPartyRecipient0SignedShine.transfer(thirdPartySender.address, 100)
+        expect(await shine.balanceOf(thirdPartyRecipient0.address)).to.equal(9324324)
+      })
     });
+
+  describe("the contract when fee adjusted", () => {
+    let shine: Contract;
+
+    beforeEach(async function(){
+      shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
+    })
+
+    it("Transfers 92% to the recipient before fee adjustment", async function(){
+      const [owner, charity, marketing, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+      await shine.setPrivilegedWallet(charity.address, 0);
+      await shine.setPrivilegedWallet(marketing.address, 1);
+      await shine.setPrivilegedWallet(liquidity.address, 2);
+
+      await timeTravelOneMinute()
+
+      await shine.transfer(thirdPartySender.address, 10000000);
+
+      let thirdPartySignedShine = await shine.connect(thirdPartySender);
+
+      await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
+
+      // await thirdPartySender.sendTransaction({Recipient: shine.address})
+
+      // TODO: make transfer come from correct address
+      expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000 * .92)
+    });
+    it("Transfers 100% to the recipient after fees are removed", async function(){
+      const [owner, charity, marketing, liquidity, thirdPartySender, thirdPartyRecipient] = await hre.ethers.getSigners();
+      await shine.setPrivilegedWallet(charity.address, 0);
+      await shine.setPrivilegedWallet(marketing.address, 1);
+      await shine.setPrivilegedWallet(liquidity.address, 2);
+      await shine.setFeePercentage(0);
+
+      await timeTravelOneMinute()
+
+      await shine.transfer(thirdPartySender.address, 10000000);
+
+      let thirdPartySignedShine = await shine.connect(thirdPartySender);
+
+      await thirdPartySignedShine.transfer(thirdPartyRecipient.address, 10000000)
+
+      // await thirdPartySender.sendTransaction({Recipient: shine.address})
+
+      // TODO: make transfer come from correct address
+      expect(await shine.balanceOf(thirdPartyRecipient.address)).to.equal(10000000)
+    });
+  });
 
   describe("the contract when paused", () => {
     let shine: Contract;
