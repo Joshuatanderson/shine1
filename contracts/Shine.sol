@@ -77,6 +77,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _isFeeExempted[address(this)] = true;
         // @dev - hardlocked airdrop release time for prerelease funds
         // presaleReleaseTime = block.timestamp + 90 days;
+
     }
 
     modifier isNotTimelocked {
@@ -218,6 +219,8 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
 
     function setPrivilegedWallet(address privileged, uint256 index) public onlyOwner () {
         privilegedWallets[index] = privileged;
+        _isFeeExempted[privileged] = true;
+        excludeAccount(privileged);
     }
 
     function privilegedWallet(uint256 index) public view returns (address) {

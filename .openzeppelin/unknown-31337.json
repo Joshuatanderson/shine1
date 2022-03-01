@@ -198,129 +198,129 @@
     },
     {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0x9fca8bb2b24e474144c26ab841d14be4907c6a54569d46075450a6c256657903",
+      "txHash": "0x7d24e6d3bea262a6ec7c3add3722519d9b52b312035877a813dd0b483d3596dd",
       "kind": "uups"
     },
     {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x66bac264df49d29270623a5044bf1bf26574d15d8014f015215b5bc63f23c44d",
+      "txHash": "0x58c21a1e159b251e401f283cb57f2ed5867b94d0500bff3efc721819e1f40207",
       "kind": "uups"
     },
     {
       "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0x09db43cc7d601d829657876c96404dcf427629121c61b2ecf7736aacde237c82",
+      "txHash": "0x563d23315126c2a16df4dca213b807b0b18000a47ce8f2789fd5b3ee70459244",
       "kind": "uups"
     },
     {
       "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
-      "txHash": "0x5e6cfd2b91d81407a3b8e0e9fc1fca9a378b2390f9ca3a4c2cd2923a2b9ea3fc",
+      "txHash": "0x704b58f9b041b47554a076f924632e6fcdec3ade18e14ce9b3e6b0e8a9ee2bb6",
       "kind": "uups"
     },
     {
       "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
-      "txHash": "0xd750dd39d500dea8ac0e033d0a956af07ad8efa7624e4d97891ce6c12e6a0b1a",
+      "txHash": "0x0a8b8396c697ff023ea754713266d0a095abe3d85406c12fecd5f59f61d76f9d",
       "kind": "uups"
     },
     {
       "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
-      "txHash": "0xfe2a7472599cd7da5e5ef6f1297d7a4f7a4957f2ca8705b5afe2ef1872467e6c",
+      "txHash": "0x3dcd3e4e3dc8e27d258e913c4aed9ec54cb9069e6ddc4c194f4a5980423e55f8",
       "kind": "uups"
     },
     {
       "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
-      "txHash": "0x4f47d21db0e6f39cec3f4b2c80bfe9feffd0f3467297e7510efeda054c27633a",
+      "txHash": "0x25eac0c4f7f67920eab7d5fe460793f3876b16bb395caf1c77c9a2893feb3fd8",
       "kind": "uups"
     },
     {
       "address": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
-      "txHash": "0x9d413e51f15ff56f59ef55d9d72a517aaa689875bdff88b4a039fd74249eace1",
+      "txHash": "0x87b8038e6a222a412c262aa45c2e19d9db1497096494226eb2c8fb8ff73846ef",
       "kind": "uups"
     },
     {
       "address": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f",
-      "txHash": "0x3cb07a1a2ffc52709d1d433a89f0051a3dcc8cbddc5f43411caa2e8930aa8eee",
+      "txHash": "0x26ddbd44521b7bf8c348ae4d5c35d0154a5f707750271f56f8bc382993624449",
       "kind": "uups"
     },
     {
       "address": "0x67d269191c92Caf3cD7723F116c85e6E9bf55933",
-      "txHash": "0x712831dd650b7d6efc6fc34ab46fb1a982d3ed798f51f7f623974c17e149fd8e",
+      "txHash": "0xa637cc20161e3906844c89468acc1ca7bedf9ba20f61292867786d1a22c4304c",
       "kind": "uups"
     },
     {
       "address": "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
-      "txHash": "0xa8070b326e8366372247bed30c112044b4291c8f22aea70b58c950c1f71dbe46",
+      "txHash": "0x62a9204007cbab1dd92141cff3596d2344bb6a354f0ced3bc8eb51660c42919e",
       "kind": "uups"
     },
     {
       "address": "0x998abeb3E57409262aE5b751f60747921B33613E",
-      "txHash": "0x5bf84730a0957a82f069319ff14c0a6231fa5bb3287d9fe20ba215d3a116fd93",
+      "txHash": "0x210c6a64b059f7e256c1df6e304c1565d7e105c19e4871759834390b35e7ffc3",
       "kind": "uups"
     },
     {
       "address": "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf",
-      "txHash": "0xa2fa4da56173fa1e1e129e8206e2ffe69d6a56c91da018c582ba42c8c7e35ce2",
+      "txHash": "0xb03d33512cb03388763f796f8010124f15a1db9da3fc23e29914a4eda9bc47a5",
       "kind": "uups"
     },
     {
       "address": "0x9d4454B023096f34B160D6B654540c56A1F81688",
-      "txHash": "0x32bff8c9204be05b8874be567c533b08a234811eeb5c0f265f73d07413c43cd9",
+      "txHash": "0x96b80d6d1eab19e2c1e95e481bfa9b096e005b27095b91773fde676c6ee322c8",
       "kind": "uups"
     },
     {
       "address": "0x1291Be112d480055DaFd8a610b7d1e203891C274",
-      "txHash": "0x734bf14a7b097548c91942303c449d66f24b4555a3bf87ea2b573fa4af90f82c",
+      "txHash": "0x00d1fcdff4ac0aeec78a7b72e3a89385d0778f1a7fda4e81854abc99c3ef4a13",
       "kind": "uups"
     },
     {
       "address": "0x5f3f1dBD7B74C6B46e8c44f98792A1dAf8d69154",
-      "txHash": "0x324d648b6ce335aa5f5ed8895efdad9ad513680006df448aaf6c4b794f33e69e",
+      "txHash": "0x675407ce540afda8461549f188dc8066e6d98c5faed3ecbe23110207413027e1",
       "kind": "uups"
     },
     {
       "address": "0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650",
-      "txHash": "0xb4174fefde8b70fadef68f53334a834ecd651cd3df7103686cc957a290771bbe",
+      "txHash": "0x0ae27e6f8ee596d979f52fd4faa8c671d950d569ebb3dbdf0b3ffd03f1519d86",
       "kind": "uups"
     },
     {
       "address": "0xc351628EB244ec633d5f21fBD6621e1a683B1181",
-      "txHash": "0x6ccce57a9ed56578937686877106caaed1c08fe89c1caabf662475472f4b2bb9",
+      "txHash": "0xa62d14ddf970d8ed24a24f40bae948609b249737fff6136f3c0ec39f0cc36fc3",
       "kind": "uups"
     },
     {
       "address": "0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc",
-      "txHash": "0x1204058b43a729a9934ee16f83c6211fb21898cd2f5ea5b04832826e80217368",
+      "txHash": "0x8b64217c046b9c9c87088219fa37ca302644c5ef0294977028c215ffa44a0795",
       "kind": "uups"
     },
     {
       "address": "0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f",
-      "txHash": "0x0c9a50473a0cb2c22dd3896d43019a0dbd1d5480f04bd31bbcd0020169f99a16",
+      "txHash": "0x85c020818a148a5f7e89c6c9e267782d6e6e090c5912a5a8c9576971de725049",
       "kind": "uups"
     },
     {
       "address": "0x922D6956C99E12DFeB3224DEA977D0939758A1Fe",
-      "txHash": "0x25a5ae3edfbc877f498f424a8c6de17ff71ffb41df52db40146001311307b81d",
+      "txHash": "0x23ae61002154d5270d9c25002aa3b59b2805e43ab5e8f92af0a082c6621ba4fa",
       "kind": "uups"
     },
     {
       "address": "0x5081a39b8A5f0E35a8D959395a630b68B74Dd30f",
-      "txHash": "0xc8c8ba18e85b2e26de9bd88378e0e460158e3dfa02df70161d05bbbaf8fbadbb",
+      "txHash": "0x224c08b1672c2e31e6be7d5d0d97040900f8223e7e6dfc276322eaaed9cd36bb",
       "kind": "uups"
     },
     {
       "address": "0x1fA02b2d6A771842690194Cf62D91bdd92BfE28d",
-      "txHash": "0x4783d2e3d7b2f6df521207b4105d2107274e41ccd46e06dc7168b7cbb5c7b438",
+      "txHash": "0x204d1e715f29bbb16970a253ac1824376352d9d027080bc095b32097bc18dd8b",
       "kind": "uups"
     },
     {
       "address": "0x4C4a2f8c81640e47606d3fd77B353E87Ba015584",
-      "txHash": "0x80abcae502ec7ac1798c080157588d4c6f8981d54d18a0ab4694e65d5c8ca157",
+      "txHash": "0x1ea9ae3dffff27595c6d4b014fafe21d5966aba7b171c8530202b1bd3f9101ac",
       "kind": "uups"
     }
   ],
   "impls": {
-    "62717f9aed0c54817cf4e0fcc3c66607c4a758b12adf65adc01dc84fd249f351": {
+    "bc6809698b2496b34b63991e78360ad76432acfff7a092d7a7d9c837145f9602": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0xe5981dd757e8a2bd690890f1edc5c27f4262a2c147ee8ec3d73f5ff2a34f9262",
+      "txHash": "0x5ce359c9c598f8a297d0a9138d566babc6ffb7f14393e0afbe6d757315e9596c",
       "layout": {
         "storage": [
           {
@@ -429,91 +429,91 @@
             "contract": "Shine",
             "label": "feePercentage",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:30"
+            "src": "contracts/Shine.sol:31"
           },
           {
             "contract": "Shine",
             "label": "_rOwned",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:32"
+            "src": "contracts/Shine.sol:33"
           },
           {
             "contract": "Shine",
             "label": "_tOwned",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:33"
+            "src": "contracts/Shine.sol:34"
           },
           {
             "contract": "Shine",
             "label": "_allowances",
             "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
-            "src": "contracts/Shine.sol:34"
+            "src": "contracts/Shine.sol:35"
           },
           {
             "contract": "Shine",
             "label": "_isExcluded",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:36"
+            "src": "contracts/Shine.sol:37"
           },
           {
             "contract": "Shine",
             "label": "_excluded",
             "type": "t_array(t_address)dyn_storage",
-            "src": "contracts/Shine.sol:37"
+            "src": "contracts/Shine.sol:38"
           },
           {
             "contract": "Shine",
             "label": "_tTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:39"
+            "src": "contracts/Shine.sol:40"
           },
           {
             "contract": "Shine",
             "label": "_rTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:40"
+            "src": "contracts/Shine.sol:41"
           },
           {
             "contract": "Shine",
             "label": "_tFeeTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:41"
+            "src": "contracts/Shine.sol:42"
           },
           {
             "contract": "Shine",
             "label": "_currentRate",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:42"
+            "src": "contracts/Shine.sol:43"
           },
           {
             "contract": "Shine",
             "label": "_feesEnabled",
             "type": "t_bool",
-            "src": "contracts/Shine.sol:43"
+            "src": "contracts/Shine.sol:44"
           },
           {
             "contract": "Shine",
             "label": "_isFeeExempted",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:45"
+            "src": "contracts/Shine.sol:46"
           },
           {
             "contract": "Shine",
             "label": "_isBlackListed",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:46"
+            "src": "contracts/Shine.sol:47"
           },
           {
             "contract": "Shine",
             "label": "_airdropUnlockTime",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:47"
+            "src": "contracts/Shine.sol:48"
           },
           {
             "contract": "Shine",
             "label": "_bPreventionTime",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:49"
+            "src": "contracts/Shine.sol:50"
           }
         ],
         "types": {
@@ -556,9 +556,9 @@
         }
       }
     },
-    "ea81a8c0325b4f29f7febca1abfcd3587a88654a13e52b1a1bc98bff9f84cc5a": {
+    "226b1cff196317373aab5da493e49264cfc5fbab317bd88bf2ece0e9aaddbef4": {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0xd03d6a004b07f2103d05440336f8f1ce193c72b7ce80dae7e4fd6548d04a6a9e",
+      "txHash": "0xe3b13ce6b7affe309923a0887405157370abca0d70b5a85ad643b1c4e68aad0d",
       "layout": {
         "storage": [
           {
@@ -667,91 +667,91 @@
             "contract": "Shine",
             "label": "feePercentage",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:30"
+            "src": "contracts/Shine.sol:31"
           },
           {
             "contract": "Shine",
             "label": "_rOwned",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:32"
+            "src": "contracts/Shine.sol:33"
           },
           {
             "contract": "Shine",
             "label": "_tOwned",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:33"
+            "src": "contracts/Shine.sol:34"
           },
           {
             "contract": "Shine",
             "label": "_allowances",
             "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
-            "src": "contracts/Shine.sol:34"
+            "src": "contracts/Shine.sol:35"
           },
           {
             "contract": "Shine",
             "label": "_isExcluded",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:36"
+            "src": "contracts/Shine.sol:37"
           },
           {
             "contract": "Shine",
             "label": "_excluded",
             "type": "t_array(t_address)dyn_storage",
-            "src": "contracts/Shine.sol:37"
+            "src": "contracts/Shine.sol:38"
           },
           {
             "contract": "Shine",
             "label": "_tTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:39"
+            "src": "contracts/Shine.sol:40"
           },
           {
             "contract": "Shine",
             "label": "_rTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:40"
+            "src": "contracts/Shine.sol:41"
           },
           {
             "contract": "Shine",
             "label": "_tFeeTotal",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:41"
+            "src": "contracts/Shine.sol:42"
           },
           {
             "contract": "Shine",
             "label": "_currentRate",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:42"
+            "src": "contracts/Shine.sol:43"
           },
           {
             "contract": "Shine",
             "label": "_feesEnabled",
             "type": "t_bool",
-            "src": "contracts/Shine.sol:43"
+            "src": "contracts/Shine.sol:44"
           },
           {
             "contract": "Shine",
             "label": "_isFeeExempted",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:45"
+            "src": "contracts/Shine.sol:46"
           },
           {
             "contract": "Shine",
             "label": "_isBlackListed",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts/Shine.sol:46"
+            "src": "contracts/Shine.sol:47"
           },
           {
             "contract": "Shine",
             "label": "_airdropUnlockTime",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts/Shine.sol:47"
+            "src": "contracts/Shine.sol:48"
           },
           {
             "contract": "Shine",
             "label": "_bPreventionTime",
             "type": "t_uint256",
-            "src": "contracts/Shine.sol:49"
+            "src": "contracts/Shine.sol:50"
           }
         ],
         "types": {

@@ -316,8 +316,6 @@ describe("transfer behavior", async function(){
         await shine.setPrivilegedWallet(marketing.address, 1);
         await shine.setPrivilegedWallet(liquidity.address, 2);
 
-        await
-
         await timeTravelOneMinute()
 
         await shine.transfer(thirdPartySender.address, 30000000);
@@ -329,7 +327,7 @@ describe("transfer behavior", async function(){
         let thirdPartyRecipient0SignedShine = await shine.connect(thirdPartySender);
 
         await thirdPartyRecipient0SignedShine.transfer(thirdPartySender.address, 100)
-        expect(await shine.balanceOf(thirdPartyRecipient0.address)).to.equal(9324324)
+        expect(await shine.balanceOf(thirdPartyRecipient0.address)).to.equal(9328236)
       })
     });
 
