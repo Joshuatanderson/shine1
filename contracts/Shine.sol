@@ -4,7 +4,7 @@ pragma solidity ^0.8.2;
 /*
 This is a no-bot contract.  Bots and scammers will be blacklisted, and their balance will be frozen.
 For more details, visit shinemine.io.
-The ShineMine team reserves the right to complete discretion over who to blacklist & unblacklist.
+The ShineMine team & ShineMine DAO reserve the right to complete discretion over who to blacklist & unblacklist.
 Any bots interacting with this contract may permanently lose access to tokens they purchase, with no recourse
 */
 
