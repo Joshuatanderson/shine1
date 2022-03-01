@@ -54,7 +54,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
     // TODO: add events
 
     function initialize() public initializer {
-        __ERC20_init("Shine", "SHINE");
+        __ERC20_init("ShineMine", "SHINE");
         __Pausable_init();
         __Ownable_init();
         __UUPSUpgradeable_init();

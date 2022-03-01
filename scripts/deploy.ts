@@ -4,7 +4,6 @@ import hre from "hardhat";
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
 
-
   console.log("Deploying contracts with the account:", deployer.address);
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
@@ -12,7 +11,6 @@ async function main() {
   const Shine = await hre.ethers.getContractFactory("Shine");
 
   let shine = await hre.upgrades.deployProxy(Shine as ContractFactory, {kind: 'uups'})
-
 
   console.log("Shine address:", shine.address);
 }

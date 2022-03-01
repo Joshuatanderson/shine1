@@ -43,6 +43,7 @@
     "prepare": "husky install",
     "test": "npx hardhat test",
     "contract-size": "npx hardhat size-contracts",
-    "deploy:ropsten": "npx hardhat run ./scripts/deploy.ts --network ropsten"
+    "deploy:ropsten": "npx hardhat run ./scripts/deploy.ts --network ropsten",
+    "deploy:mainnet": "npx hardhat run ./scripts/deploy.ts --network mainnet"
   }
 }

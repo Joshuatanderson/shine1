@@ -30,7 +30,7 @@ describe("state at deployment", () => {
   // act
 
   it("Is named Shine", async function(){
-    assert(await shine.name() === "Shine");
+    assert(await shine.name() === "ShineMine");
   })
   it("Has the symbol 'SHINE'", async function() {
     assert(await shine.symbol() === "SHINE");
