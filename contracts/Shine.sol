@@ -220,7 +220,7 @@ contract Shine is ERC20PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         privilegedWallets[index] = privileged;
     }
 
-    function privilegedWallet(uint256 index) public returns (address) {
+    function privilegedWallet(uint256 index) public view returns (address) {
         return privilegedWallets[index];
     }
 
